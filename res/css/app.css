@@ -1,0 +1,16 @@
+.fa-star {
+  visibility: hidden;
+}
+.fav-icon:active,
+.fav-icon:focus,
+.fav-icon:visited {
+  outline: none;
+}
+.menu-link:hover .fa-star,
+.fav-icon:hover .fa-star, .fa-star.fav {
+  visibility: visible;
+}
+
+.grid-modal .fa-calendar-plus{
+  margin-left: -20px;
+}

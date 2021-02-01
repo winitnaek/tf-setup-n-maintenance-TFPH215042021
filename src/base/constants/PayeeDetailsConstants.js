@@ -1,0 +1,1 @@
+export const GET_PAYEE_DETAILS = 'getPayeeDetails';

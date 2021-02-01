@@ -1,0 +1,15 @@
+[ 
+    {
+        "dataset": "VINIT",
+        "company": "TESTCOMP1",
+        "companyName": null,
+        "location": "BSI OFFICE",
+        "street1": "155 Technology Parkway",
+        "street2": "",
+        "city": "Norcross",
+        "county": "Gwinnett",
+        "state": "GA",
+        "stateDisplay": null,
+        "zip": "30092"
+    }
+]

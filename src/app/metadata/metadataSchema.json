@@ -1,0 +1,617 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "title": "The Root Schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "required": ["pgdef", "griddef", "formdef"],
+  "properties": {
+    "pgdef": {
+      "id": "http://jsonschema.net/pgdef",
+      "type": "object",
+      "title": "The Pgdef Schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "pgsubtitle": "",
+          "flowtype": "flowtype2",
+          "helpLink": "/companies",
+          "pgid": "worksiteCompanies",
+          "pgtitle": "Worksites",
+          "helpLblTxt": "Click here for more info!",
+          "helpAvailable": true,
+          "actiondel": false,
+          "addNewLabel": "Click here to add new Company.",
+          "parentConfig": {},
+          "childConfig": "",
+          "hasAddNew": true
+        }
+      ],
+      "required": [
+        "pgid",
+        "pgtitle",
+        "pgsubtitle",
+        "flowtype",
+        "hasAddNew",
+        "addNewLabel",
+        "actiondel",
+        "helpAvailable",
+        "helpLblTxt",
+        "helpLink",
+        "parentConfig",
+        "childConfig"
+      ],
+      "properties": {
+        "pgid": {
+          "id": "http://jsonschema.net/pgid",
+          "type": "string",
+          "title": "The Pgid Schema",
+          "default": "",
+          "examples": ["customPayments"],
+          "pattern": "^[a-zA-Z0-9]{4,50}$"
+        },
+        "pgtitle": {
+          "id": "http://jsonschema.net/pgtitle",
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 100
+        },
+        "pgsubtitle": {
+          "id": "http://jsonschema.net/pgsubtitle",
+          "type": "string",
+          "title": "The Pgsubtitle Schema",
+          "minLength": 10,
+          "maxLength": 200
+        },
+        "flowtype": {
+          "id": "http://jsonschema.net/flowtype",
+          "type": "string",
+          "title": "The Flowtype Schema",
+          "examples": ["flowtype1"],
+          "enum": ["flowtype1", "flowtype2"]
+        },
+        "hasAddNew": {
+          "id": "http://jsonschema.net/hasAddNew",
+          "type": "boolean",
+          "title": "The Hasaddnew Schema",
+          "default": false,
+          "examples": [true]
+        },
+        "addNewLabel": {
+          "id": "http://jsonschema.net/addNewLabel",
+          "type": "string",
+          "title": "The Addnewlabel Schema",
+          "examples": ["Click here to add new Custom Payment."]
+        },
+        "actiondel": {
+          "id": "http://jsonschema.net/actiondel",
+          "type": "boolean",
+          "title": "The Actiondel Schema",
+          "default": false,
+          "examples": [false]
+        },
+        "helpAvailable": {
+          "id": "http://jsonschema.net/helpAvailable",
+          "type": "boolean",
+          "title": "The Helpavailable Schema",
+          "default": false,
+          "examples": [true]
+        },
+        "helpLblTxt": {
+          "id": "http://jsonschema.net/helpLblTxt",
+          "type": "string",
+          "title": "The Helplbltxt Schema",
+          "examples": ["Click here for more info!"]
+        },
+        "helpLink": {
+          "id": "http://jsonschema.net/helpLink",
+          "type": "string",
+          "title": "The Helplink Schema",
+          "default": "",
+          "examples": ["/customPayments"]
+        },
+        "parentConfig": {
+          "id": "http://jsonschema.net/pgdef/properties/parentConfig",
+          "type": "object",
+          "title": "The Parentconfig Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [{}]
+        },
+        "childConfig": {
+          "id": "http://jsonschema.net/pgdef/properties/childConfig",
+          "type": "string",
+          "title": "The Childconfig Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [""]
+        }
+      }
+    },
+    "griddef": {
+      "id": "http://jsonschema.net/griddef",
+      "type": "object",
+      "title": "The Griddef Schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "gridtype": "type2",
+          "contenttype": "application/json",
+          "datatype": "json",
+          "dataFields": [
+            {
+              "type": "string",
+              "name": "location"
+            }
+          ],
+          "recordDelete": true,
+          "filtergrid": true,
+          "recordEdit": true,
+          "columns": [
+            {
+              "align": "center",
+              "datafield": "location",
+              "rendererStaticInput": "",
+              "rendererInput": "",
+              "cellsalign": "center",
+              "sortable": true,
+              "text": "Worksite"
+            }
+          ],
+          "noResultsFoundTxt": "There are no Locations defined for this company"
+        }
+      ],
+      "required": [
+        "gridtype",
+        "isfilterform",
+        "isfilter",
+        "datatype",
+        "contenttype",
+        "noResultsFoundTxt",
+        "recordEdit",
+        "recordDelete",
+        "columns",
+        "dataFields"
+      ],
+      "properties": {
+        "gridtype": {
+          "id": "http://jsonschema.net/gridtype",
+          "type": "string",
+          "title": "The Gridtype Schema",
+          "default": "",
+          "examples": ["type1"],
+          "enum": ["ro", "type1", "type2"]
+        },
+        "isfilterform": {
+          "id": "http://jsonschema.net/griddef/properties/isfilterform",
+          "type": "boolean",
+          "title": "The Isfilterform Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [false]
+        },
+        "isfilter": {
+          "id": "http://jsonschema.net/griddef/properties/isfilter",
+          "type": "boolean",
+          "title": "The Isfilter Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [false]
+        },
+        "datatype": {
+          "id": "http://jsonschema.net/griddef/properties/datatype",
+          "type": "string",
+          "title": "The Datatype Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "json",
+          "examples": ["json"],
+          "enum": ["json"]
+        },
+        "contenttype": {
+          "id": "http://jsonschema.net/griddef/properties/contenttype",
+          "type": "string",
+          "title": "The Contenttype Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "application/json",
+          "examples": ["application/json"],
+          "enum": ["application/json"]
+        },
+        "noResultsFoundTxt": {
+          "id": "http://jsonschema.net/griddef/properties/noResultsFoundTxt",
+          "type": "string",
+          "title": "The Noresultsfoundtxt Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "No Result Found!",
+          "examples": ["There are no Locations defined for this company"]
+        },
+        "recordEdit": {
+          "id": "http://jsonschema.net/griddef/properties/recordEdit",
+          "type": "boolean",
+          "title": "The Recordedit Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [true]
+        },
+        "recordDelete": {
+          "id": "http://jsonschema.net/griddef/properties/recordDelete",
+          "type": "boolean",
+          "title": "The Recorddelete Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [true]
+        },
+        "columns": {
+          "id": "http://jsonschema.net/griddef/properties/columns",
+          "type": "array",
+          "title": "The Columns Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "items": {
+            "id": "http://jsonschema.net/griddef/properties/columns/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "align": "center",
+                "datafield": "location",
+                "rendererStaticInput": "",
+                "rendererInput": "",
+                "cellsalign": "center",
+                "sortable": true,
+                "text": "Worksite"
+              }
+            ],
+            "required": [
+              "text",
+              "datafield",
+              "cellsalign",
+              "align",
+              "sortable",
+              "rendererInput",
+              "rendererStaticInput"
+            ],
+            "properties": {
+              "text": {
+                "id": "http://jsonschema.net/griddef/properties/columns/items/properties/text",
+                "type": "string",
+                "title": "The Text Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["Worksite"]
+              },
+              "datafield": {
+                "id": "http://jsonschema.net/griddef/properties/columns/items/properties/datafield",
+                "type": "string",
+                "title": "The Datafield Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["location"]
+              },
+              "cellsalign": {
+                "id": "http://jsonschema.net/griddef/properties/columns/items/properties/cellsalign",
+                "type": "string",
+                "title": "The Cellsalign Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["center"]
+              },
+              "align": {
+                "id": "http://jsonschema.net/griddef/properties/columns/items/properties/align",
+                "type": "string",
+                "title": "The Align Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["center"]
+              },
+              "sortable": {
+                "id": "http://jsonschema.net/griddef/properties/columns/items/properties/sortable",
+                "type": "boolean",
+                "title": "The Sortable Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": false,
+                "examples": [true]
+              },
+              "rendererInput": {
+                "id": "http://jsonschema.net/griddef/properties/columns/items/properties/rendererInput",
+                "type": "string",
+                "title": "The Rendererinput Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": [""]
+              },
+              "rendererStaticInput": {
+                "id": "http://jsonschema.net/griddef/properties/columns/items/properties/rendererStaticInput",
+                "type": "string",
+                "title": "The Rendererstaticinput Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": [""]
+              }
+            }
+          }
+        },
+        "dataFields": {
+          "id": "http://jsonschema.net/griddef/properties/dataFields",
+          "type": "array",
+          "title": "The Datafields Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "items": {
+            "id": "http://jsonschema.net/griddef/properties/dataFields/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "type": "string",
+                "name": "location"
+              }
+            ],
+            "required": ["name", "type"],
+            "properties": {
+              "name": {
+                "id": "http://jsonschema.net/griddef/properties/dataFields/items/properties/name",
+                "type": "string",
+                "title": "The Name Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["location"]
+              },
+              "type": {
+                "id": "http://jsonschema.net/griddef/properties/dataFields/items/properties/type",
+                "type": "string",
+                "title": "The Type Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["string"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "formdef": {
+      "id": "http://jsonschema.net/formdef",
+      "type": "object",
+      "title": "The Formdef Schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "hasDelete": false,
+          "subtitle": "Manage Worksites for: TESTCOMP1 (Test Company 1)",
+          "hasViewPDF": false,
+          "formflds": [
+            {
+              "order": 1.0,
+              "id": "worksiteLocation",
+              "isReadOnlyOnNew": false,
+              "isReadOnlyOnEdit": true
+            }
+          ],
+          "title": "Worksite",
+          "hasRecentUsage": true,
+          "hasView": false,
+          "fltrflds": [
+            {
+              "id": "worksiteLocation",
+              "isReadOnlyOnNew": false,
+              "isReadOnlyOnEdit": true,
+              "order": 1.0
+            }
+          ],
+          "hasSaveAs": false,
+          "hasSave": true,
+          "note": "Note: Required fields are marked with an asterisk (*)"
+        }
+      ],
+      "required": [
+        "title",
+        "subtitle",
+        "note",
+        "hasSave",
+        "hasDelete",
+        "hasSaveAs",
+        "hasViewPDF",
+        "hasView",
+        "hasRecentUsage",
+        "formflds",
+        "fltrflds"
+      ],
+      "properties": {
+        "title": {
+          "id": "http://jsonschema.net/formdef/properties/title",
+          "type": "string",
+          "title": "The Title Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": ["Worksite"]
+        },
+        "subtitle": {
+          "id": "http://jsonschema.net/formdef/properties/subtitle",
+          "type": "string",
+          "title": "The Subtitle Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": ["Manage Worksites for: TESTCOMP1 (Test Company 1)"]
+        },
+        "note": {
+          "id": "http://jsonschema.net/formdef/properties/note",
+          "type": "string",
+          "title": "The Note Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": ["Note: Required fields are marked with an asterisk (*)"]
+        },
+        "hasSave": {
+          "id": "http://jsonschema.net/formdef/properties/hasSave",
+          "type": "boolean",
+          "title": "The Hassave Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [true]
+        },
+        "hasDelete": {
+          "id": "http://jsonschema.net/formdef/properties/hasDelete",
+          "type": "boolean",
+          "title": "The Hasdelete Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [false]
+        },
+        "hasSaveAs": {
+          "id": "http://jsonschema.net/formdef/properties/hasSaveAs",
+          "type": "boolean",
+          "title": "The Hassaveas Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [false]
+        },
+        "hasViewPDF": {
+          "id": "http://jsonschema.net/formdef/properties/hasViewPDF",
+          "type": "boolean",
+          "title": "The Hasviewpdf Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [false]
+        },
+        "hasView": {
+          "id": "http://jsonschema.net/formdef/properties/hasView",
+          "type": "boolean",
+          "title": "The Hasview Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [false]
+        },
+        "hasRecentUsage": {
+          "id": "http://jsonschema.net/formdef/properties/hasRecentUsage",
+          "type": "boolean",
+          "title": "The Hasrecentusage Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [true]
+        },
+        "formflds": {
+          "id": "http://jsonschema.net/formdef/properties/formflds",
+          "type": "array",
+          "title": "The Formflds Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "items": {
+            "id": "http://jsonschema.net/formdef/properties/formflds/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "isReadOnlyOnEdit": true,
+                "order": 1.0,
+                "id": "worksiteLocation",
+                "isReadOnlyOnNew": false
+              }
+            ],
+            "required": ["id", "order", "isReadOnlyOnEdit", "isReadOnlyOnNew"],
+            "properties": {
+              "id": {
+                "id": "http://jsonschema.net/formdef/properties/formflds/items/properties/id",
+                "type": "string",
+                "title": "The Id Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["worksiteLocation"]
+              },
+              "order": {
+                "id": "http://jsonschema.net/formdef/properties/formflds/items/properties/order",
+                "type": "integer",
+                "title": "The Order Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": 0,
+                "examples": [1]
+              },
+              "isReadOnlyOnEdit": {
+                "id": "http://jsonschema.net/formdef/properties/formflds/items/properties/isReadOnlyOnEdit",
+                "type": "boolean",
+                "title": "The Isreadonlyonedit Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": false,
+                "examples": [true]
+              },
+              "isReadOnlyOnNew": {
+                "id": "http://jsonschema.net/formdef/properties/formflds/items/properties/isReadOnlyOnNew",
+                "type": "boolean",
+                "title": "The Isreadonlyonnew Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": false,
+                "examples": [false]
+              }
+            }
+          }
+        },
+        "fltrflds": {
+          "id": "http://jsonschema.net/formdef/properties/fltrflds",
+          "type": "array",
+          "title": "The Fltrflds Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "items": {
+            "id": "http://jsonschema.net/formdef/properties/fltrflds/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "isReadOnlyOnEdit": true,
+                "order": 1.0,
+                "id": "worksiteLocation",
+                "isReadOnlyOnNew": false
+              }
+            ],
+            "required": ["id", "order", "isReadOnlyOnEdit", "isReadOnlyOnNew"],
+            "properties": {
+              "id": {
+                "id": "http://jsonschema.net/formdef/properties/fltrflds/items/properties/id",
+                "type": "string",
+                "title": "The Id Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["worksiteLocation"]
+              },
+              "order": {
+                "id": "http://jsonschema.net/formdef/properties/fltrflds/items/properties/order",
+                "type": "integer",
+                "title": "The Order Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": 0,
+                "examples": [1]
+              },
+              "isReadOnlyOnEdit": {
+                "id": "http://jsonschema.net/formdef/properties/fltrflds/items/properties/isReadOnlyOnEdit",
+                "type": "boolean",
+                "title": "The Isreadonlyonedit Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": false,
+                "examples": [true]
+              },
+              "isReadOnlyOnNew": {
+                "id": "http://jsonschema.net/formdef/properties/fltrflds/items/properties/isReadOnlyOnNew",
+                "type": "boolean",
+                "title": "The Isreadonlyonnew Schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": false,
+                "examples": [false]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

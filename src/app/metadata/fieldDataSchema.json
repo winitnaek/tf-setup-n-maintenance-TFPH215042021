@@ -1,0 +1,426 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "required": [
+      "id",
+      "name",
+      "placeholder",
+      "fieldtype",
+      "label",
+      "initialvalue",
+      "errmsg",
+      "fieldlength",
+      "fieldinfo",
+      "validation"
+  ],
+  "properties": {
+      "id": {
+          "id": "#/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+              "formulaNumber"
+          ]
+      },
+      "name": {
+          "id": "#/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+              "formulaNumber"
+          ]
+      },
+      "placeholder": {
+          "id": "#/properties/placeholder",
+          "type": "string",
+          "title": "The Placeholder Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+              "Enter Formula Number"
+          ]
+      },
+      "fieldtype": {
+          "id": "#/properties/fieldtype",
+          "type": "string",
+          "title": "The Fieldtype Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+              "text"
+          ]
+      },
+      "label": {
+          "id": "#/properties/label",
+          "type": "string",
+          "title": "The Label Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+              "Formula Number"
+          ]
+      },
+      "initialvalue": {
+          "id": "http://jsonschema.net/initialvalue",
+          "type": "string",
+          "title": "The Initialvalue Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+              ""
+          ]
+      },
+      "errmsg": {
+          "id": "http://jsonschema.net/errmsg",
+          "type": "string",
+          "title": "The Errmsg Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+              "Formula Number is required"
+          ]
+      },
+      "fieldlength": {
+          "id": "http://jsonschema.net/fieldlength",
+          "type": "object",
+          "title": "The Fieldlength Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+              {
+                  "minlength": 1.0,
+                  "maxlength": 3.0
+              }
+          ],
+          "required": [
+              "minlength",
+              "maxlength"
+          ],
+          "properties": {
+              "minlength": {
+                  "id": "http://jsonschema.net/fieldlength/properties/minlength",
+                  "type": "integer",
+                  "title": "The Minlength Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": 0,
+                  "examples": [
+                      1
+                  ]
+              },
+              "maxlength": {
+                  "id": "http://jsonschema.net/fieldlength/properties/maxlength",
+                  "type": "integer",
+                  "title": "The Maxlength Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": 0,
+                  "examples": [
+                      3
+                  ]
+              }
+          }
+      },
+      "fieldinfo": {
+          "id": "http://jsonschema.net/fieldinfo",
+          "type": "object",
+          "title": "The Fieldinfo Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+              {
+                  "options": [
+                      {
+                          "value": "TaxType1",
+                          "label": "Withholding"
+                      },
+                      {
+                          "label": "Income Tax",
+                          "value": "TaxType2"
+                      },
+                      {
+                          "value": "TaxType3",
+                          "label": "Payroll Tax"
+                      }
+                  ],
+                  "typeahead": false,
+                  "isasync": false,
+                  "multiselect": false
+              }
+          ],
+          "required": [
+              "typeahead",
+              "isasync",
+              "options",
+              "multiselect"
+          ],
+          "properties": {
+              "typeahead": {
+                  "id": "http://jsonschema.net/fieldinfo/properties/typeahead",
+                  "type": "boolean",
+                  "title": "The Typeahead Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": false,
+                  "examples": [
+                      false
+                  ]
+              },
+              "isasync": {
+                  "id": "http://jsonschema.net/fieldinfo/properties/isasync",
+                  "type": "boolean",
+                  "title": "The Isasync Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": false,
+                  "examples": [
+                      false
+                  ]
+              },
+              "options": {
+                  "id": "http://jsonschema.net/fieldinfo/properties/options",
+                  "type": "array",
+                  "title": "The Options Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": [],
+                  "items": {
+                      "id": "http://jsonschema.net/fieldinfo/properties/options/items",
+                      "type": "object",
+                      "title": "The Items Schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                          {
+                              "label": "Withholding",
+                              "value": "TaxType1"
+                          },
+                          {
+                              "value": "TaxType2",
+                              "label": "Income Tax"
+                          },
+                          {
+                              "value": "TaxType3",
+                              "label": "Payroll Tax"
+                          }
+                      ],
+                      "required": [
+                          "value",
+                          "label"
+                      ],
+                      "properties": {
+                          "value": {
+                              "id": "http://jsonschema.net/fieldinfo/properties/options/items/properties/value",
+                              "type": "string",
+                              "title": "The Value Schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": "",
+                              "examples": [
+                                  "TaxType1"
+                              ]
+                          },
+                          "label": {
+                              "id": "http://jsonschema.net/fieldinfo/properties/options/items/properties/label",
+                              "type": "string",
+                              "title": "The Label Schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": "",
+                              "examples": [
+                                  "Withholding"
+                              ]
+                          }
+                      }
+                  }
+              },
+              "multiselect": {
+                  "id": "http://jsonschema.net/fieldinfo/properties/multiselect",
+                  "type": "boolean",
+                  "title": "The Multiselect Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": false,
+                  "examples": [
+                      false
+                  ]
+              }
+          }
+      },
+      "validation": {
+          "id": "http://jsonschema.net/validation",
+          "type": "object",
+          "title": "The Validation Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+              {
+                  "type": "number",
+                  "required": true,
+                  "constraint": [
+                      {
+                          "type": "min",
+                          "input": 0.0,
+                          "message": "Formula can not be < 0"
+                      },
+                      {
+                          "message": "Formula can not be > 100",
+                          "type": "max",
+                          "input": 100.0
+                      }
+                  ],
+                  "subtype": [
+                      {
+                          "type": "positive",
+                          "message": "Invalid Formula No."
+                      },
+                      {
+                          "message": "Invalid Formula No.snip",
+                          "type": "integer"
+                      }
+                  ]
+              }
+          ],
+          "required": [
+              "required",
+              "type",
+              "subtype",
+              "constraint"
+          ],
+          "properties": {
+              "required": {
+                  "id": "http://jsonschema.net/validation/properties/required",
+                  "type": "boolean",
+                  "title": "The Required Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": false,
+                  "examples": [
+                      true
+                  ]
+              },
+              "type": {
+                  "id": "http://jsonschema.net/validation/properties/type",
+                  "type": "string",
+                  "title": "The Type Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": "",
+                  "examples": [
+                      "number"
+                  ]
+              },
+              "subtype": {
+                  "id": "http://jsonschema.net/validation/properties/subtype",
+                  "type": "array",
+                  "title": "The Subtype Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": [],
+                  "items": {
+                      "id": "http://jsonschema.net/validation/properties/subtype/items",
+                      "type": "object",
+                      "title": "The Items Schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                          {
+                              "message": "Invalid Formula No.",
+                              "type": "positive"
+                          },
+                          {
+                              "message": "Invalid Formula No.snip",
+                              "type": "integer"
+                          }
+                      ],
+                      "required": [
+                          "type",
+                          "message"
+                      ],
+                      "properties": {
+                          "type": {
+                              "id": "http://jsonschema.net/validation/properties/subtype/items/properties/type",
+                              "type": "string",
+                              "title": "The Type Schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": "",
+                              "examples": [
+                                  "positive"
+                              ]
+                          },
+                          "message": {
+                              "id": "http://jsonschema.net/validation/properties/subtype/items/properties/message",
+                              "type": "string",
+                              "title": "The Message Schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": "",
+                              "examples": [
+                                  "Invalid Formula No."
+                              ]
+                          }
+                      }
+                  }
+              },
+              "constraint": {
+                  "id": "http://jsonschema.net/validation/properties/constraint",
+                  "type": "array",
+                  "title": "The Constraint Schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": [],
+                  "items": {
+                      "id": "http://jsonschema.net/validation/properties/constraint/items",
+                      "type": "object",
+                      "title": "The Items Schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                          {
+                              "message": "Formula can not be < 0",
+                              "type": "min",
+                              "input": 0.0
+                          },
+                          {
+                              "message": "Formula can not be > 100",
+                              "type": "max",
+                              "input": 100.0
+                          }
+                      ],
+                      "required": [
+                          "type",
+                          "input",
+                          "message"
+                      ],
+                      "properties": {
+                          "type": {
+                              "id": "http://jsonschema.net/validation/properties/constraint/items/properties/type",
+                              "type": "string",
+                              "title": "The Type Schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": "",
+                              "examples": [
+                                  "min"
+                              ]
+                          },
+                          "input": {
+                              "id": "http://jsonschema.net/validation/properties/constraint/items/properties/input",
+                              "type": "integer",
+                              "title": "The Input Schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": 0,
+                              "examples": [
+                                  0
+                              ]
+                          },
+                          "message": {
+                              "id": "http://jsonschema.net/validation/properties/constraint/items/properties/message",
+                              "type": "string",
+                              "title": "The Message Schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": "",
+                              "examples": [
+                                  "Formula can not be < 0"
+                              ]
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  }
+}
