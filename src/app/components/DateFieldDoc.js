@@ -42,7 +42,7 @@ class DateFieldDoc extends React.Component {
       let data = tftools.filter(tftool => {
         if (tftool.id == pgid) return tftool;
       });
-      renderTFApplication("pageContainer", data[0]);
+      renderTFSetupNMaintenance("pageContainer", data[0]);
     };
 
     this.toggle = (id, title) => {

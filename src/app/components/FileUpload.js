@@ -138,7 +138,7 @@ class FileUpload extends Component {
     }
 
     this.renderGrid = (pgData) => {
-        renderTFApplication("pageContainer", pgData);
+        renderTFSetupNMaintenance("pageContainer", pgData);
       }
 
        this.openLink = () => {
@@ -146,7 +146,7 @@ class FileUpload extends Component {
         const link = pgdef.link;
         const data = tftools.find(tool => tool.id === link);
         if (data) {
-          renderTFApplication("pageContainer", data);
+          renderTFSetupNMaintenance("pageContainer", data);
         }
       };
 

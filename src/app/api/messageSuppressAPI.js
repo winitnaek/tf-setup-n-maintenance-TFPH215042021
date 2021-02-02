@@ -1,6 +1,6 @@
 import { appError, getAdminErrorMessage } from 'bsiuilib';
 import { saveUrl, reqInfo, getUrl } from '../../base/utils/tfUtils';
-import store from '../../tf_index';
+import store from '../../tf_setup_n_maintenance';
 class MessageSuppressApi {
   static suppressMessages(pageid, messages) {
     let url = saveUrl(pageid);

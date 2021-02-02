@@ -19,7 +19,7 @@ import {
   generateUrl
 } from "bsiuilib";
 import * as CellsRenderer from "../../app/metadata/cellsrenderer";
-import store from "../../tf_index";
+import store from "../../tf_setup_n_maintenance";
 import {garnishmentFormulaOverrides,buildGarnishmentFormulaOverridesDelete,getGarnFormulaOverdTaxTypeInput,buildGarnishmentFormulaOverridesSaveInput,generateGarnishmentFormulaOverridePDF} from './gfOverridesUtil';
 import {buildCustomTaxFormulasSaveInput} from './cfFormulaUtil';
 import {optionalRateOverrideGridInput,buildOptionalRateOverrideDelete,getOrOverrideTaxTypeInput,getOrOverrideFormulaInput,buildOptionalRateOverrideSaveInput} from './orOverridesUtil';

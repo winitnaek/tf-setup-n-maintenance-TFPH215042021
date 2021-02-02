@@ -1,6 +1,6 @@
 import { appError, getAdminErrorMessage } from "bsiuilib";
 import { autocompleteURL, reqInfo, buildAutoCompSelInput } from "../../base/utils/tfUtils";
-import store from "../../tf_index";
+import store from "../../tf_setup_n_maintenance";
 class formDataAPI {
   static getFormData(fieldId, query, formValues = {}) {
     let autoCompInput = buildAutoCompSelInput(fieldId, store, query, formValues);

@@ -14,7 +14,7 @@ import mappingToolUsageAPI from "../api/mappingToolUsageAPI";
 
 class MessageViewerContainer extends Component {
   renderGrid(pgData) {
-    renderTFApplication("pageContainer", pgData);
+    renderTFSetupNMaintenance("pageContainer", pgData);
   }
 
   render() {

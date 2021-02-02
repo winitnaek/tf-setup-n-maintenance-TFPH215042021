@@ -1,6 +1,6 @@
 import {appError, getAdminErrorMessage}  from "bsiuilib";
 import {saveUrl, reqInfo,buildSaveInput, saveAsUrl, buildSaveAsInput} from "../../base/utils/tfUtils";
-import store from '../../tf_index';
+import store from '../../tf_setup_n_maintenance';
 class savegriddataAPI {
   static saveGridData(pageid, data, mode) {
     console.log("Made it to the savegriddata api");

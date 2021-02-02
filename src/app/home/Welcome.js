@@ -42,7 +42,7 @@ class Welcome extends Component {
   renderMe(pageId, values, filter) {
     filter && this.props.setFilterFormData(values);
     let data = tftools.find(tftool => tftool.id == pageId);
-    renderTFApplication("pageContainer", data);
+    renderTFSetupNMaintenance("pageContainer", data);
   }
 
   toggle({id, title, type}) {

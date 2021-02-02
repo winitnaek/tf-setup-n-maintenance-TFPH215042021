@@ -38,6 +38,15 @@ export const tftools = [
     link: false,
     href:"https://mybsiconnect.force.com/cp_Product_Cyclic_Landing_PageV2?id=01tU0000000HRQiIAO",
     section:'Maintenance Tools'
+  },
+  {
+    value: 'SM',
+    label: 'Messages to Suppress',
+    desc: 'Messages to Suppress',
+    id: 'messageToSuppress',
+    type: 'page',
+    link: true,
+    section:'Configuration'
   }
 ];
 

@@ -61,7 +61,7 @@ class TestHarness extends React.Component {
   }
   metadataCancel() {
     this.setState({modal:false});
-    renderTFApplication("appContent", "renderTFHome");
+    renderTFSetupNMaintenance("appContent", "renderTFHome");
   }
   onToolsInfo() {
     this.fileReaderTI = new FileReader();

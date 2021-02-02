@@ -228,7 +228,7 @@ export const UploadResults = props => {
   const openMessageViewer = () => {
     const data = tfTools.find(tool => tool.id === "messageViewer");
     if (data) {
-      renderTFApplication("pageContainer", data);
+      renderTFSetupNMaintenance("pageContainer", data);
     }
   };
 

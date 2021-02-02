@@ -12,10 +12,10 @@ const APP_DIR = path.resolve(__dirname, "src");
 
 const commonConfig = {
   entry: [
-    APP_DIR + "/tf_index.js" // Your appʼs entry point
+    APP_DIR + "/tf_setup_n_maintenance.js" // Your appʼs entry point
   ],
   output: {
-    filename: "tfBundle.js",
+    filename: "tfSetupNMaintenanceBundle.js",
     path: path.resolve(__dirname, "dist"),
     publicPath: "/"
   },

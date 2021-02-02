@@ -1,6 +1,6 @@
 import {appError, getAdminErrorMessage}  from "bsiuilib";
 import {generateReportUrl, reqInfo,buildMaritalStatusInput, buildBatchTestInput, buildFileUploadInput} from "../../base/utils/tfUtils";
-import store from '../../tf_index';
+import store from '../../tf_setup_n_maintenance';
 class generateReportApi {
   static generate(pageid, data) {
     let url = generateReportUrl(pageid);

@@ -15,7 +15,7 @@ import * as styles from "../../base/constants/AppConstants";
 import { getUsageData } from "../api/getUsageDataAPI";
 import formDataAPI from "../api/formDataAPI";
 import savegriddataAPI from "../api/savegriddataAPI";
-import { isMock } from '../../tf_index';
+import { isMock } from '../../tf_setup_n_maintenance';
 class TFHome extends Component {
   constructor(props) {
     super(props);
@@ -84,7 +84,7 @@ class TFHome extends Component {
   renderMe(pageId, values, filter) {
     filter && this.props.setFilterFormData(values);
     let data = tftools.find(tftool => tftool.id == pageId);
-    renderTFApplication("pageContainer", data);
+    renderTFSetupNMaintenance("pageContainer", data);
   }
 
   renderApplication(data) {

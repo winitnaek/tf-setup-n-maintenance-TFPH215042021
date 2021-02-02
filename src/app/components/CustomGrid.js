@@ -32,7 +32,7 @@ class CustomGrid extends Component {
     };
 
     this.renderGrid = pgData => {
-      renderTFApplication("pageContainer", pgData);
+      renderTFSetupNMaintenance("pageContainer", pgData);
     };
 
     this.formAction = data => {

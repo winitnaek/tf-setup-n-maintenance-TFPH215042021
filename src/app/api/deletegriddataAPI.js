@@ -1,6 +1,6 @@
 import {appError, getAdminErrorMessage}  from "bsiuilib";
 import {deleteUrl, reqInfo, buildDeleteInput} from "../../base/utils/tfUtils";
-import store from '../../tf_index';
+import store from '../../tf_setup_n_maintenance';
 class deletegriddataAPI {
   static deleteGridData(pageid, data, mode) {
     let url = deleteUrl(pageid);

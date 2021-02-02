@@ -1,5 +1,5 @@
 import moment from "moment";
-import store from "../../tf_index";
+import store from "../../tf_setup_n_maintenance";
 import {setParentData} from '../../app/actions/parentDataActions';
 /**
  * garnishmentFormulaOverrides
