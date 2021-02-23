@@ -37,6 +37,8 @@ import {
   SAVE_SUPPRESS_MESSAGES,
   GET_SUPPRESSED_MESSAGES,
   GET_DATASETS,
+  SAVE_DATASET,
+  DELETE_DATASET,
   GET_PERMISSIONS,
   SAVE_PERMISSIONS,
   PERMISSION_FOR,
@@ -120,13 +122,15 @@ export const deleteDataApiMap = {
   messageViewer: DELETE_ALL_MESSAGES,
   messagesViewer: DELETE_ALL_MESSAGES_BY_RUN_ID,
   auditLogViewer: DELTE_CUSTOM_PAYMENT,
+  dataSets: DELETE_DATASET
 };
 
 export const saveDataApiMap = {
   messageToSuppress: SAVE_SUPPRESS_MESSAGES,
   permissions: SAVE_PERMISSIONS,
   unemploymentCompanyOverrides:GET_UM_EMPLOYMENT_OVERRIDE_SAVE,
-  generalconfigOption: './_customrestoreStatus_MockData.json'
+  generalconfigOption: './_customrestoreStatus_MockData.json',
+  dataSets: SAVE_DATASET
 };
 
 export const saveAsAPIMap = {

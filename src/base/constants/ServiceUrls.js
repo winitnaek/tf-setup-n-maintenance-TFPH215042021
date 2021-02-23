@@ -33,7 +33,6 @@ export const SAVE_SUPPRESS_MESSAGES = '/MessageSuppress/saveMessagesToSuppress';
 export const GET_SUPPRESSED_MESSAGES = '/MessageSuppress/getSuppressedMessages';
 export const GARNISHMENT_FORMULAS_OVERRIDE = '/GarnishmentOverrite/getFormulasOverride';
 export const GARNISHMENT_FORMULA_OVERRIDES = '/GarnishmentService/getGarnishmentFormulaOverrides';
-export const GET_DATASETS = '/getDataSEts';
 export const GET_PERMISSIONS = './GET_PERMISSIONS';
 export const SAVE_PERMISSIONS = './SAVE_PERMISSIONS';
 export const PERMISSION_FOR = './PERMISSION_FOR';
@@ -88,3 +87,8 @@ export const GET_OPTIONAL_UNEMPLOYMENT_BACKUP= './_optionalBackup_MockData.json'
 export const GET_OPTIONAL_UNEMPLOYMENT_RESTORE = './_optionalRestore_MockData.json'
 export const GENERATE_DATABASE_LOAD = './_databaseLoad_MockData.json'
 export const SAVE_CUSTOM_DATA_BACKUP = './_customdataBackup_MockData.json'
+//Datasets API Start
+export const GET_DATASETS = '/DatasetService/getDatasetList';
+export const SAVE_DATASET = '/DatasetService/saveDataset';
+export const DELETE_DATASET = '/DatasetService/deleteDataset';
+//Datasets API Start

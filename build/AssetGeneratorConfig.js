@@ -4,8 +4,6 @@ const getAssetGeneratorConfig = (environment, sourcePath) => {
     debug: true,
     sourceFolders: [
       `${sourcePath}/type3grid/AuditLogViewer/`,
-      `${sourcePath}/readonlyfilter/`,
-      `${sourcePath}/readonlygrid/`,
       `${sourcePath}/autoCompleteMockData/`,
       `${sourcePath}/type1grid/`,
       `${sourcePath}/type2grid/Screens/`,
@@ -14,12 +12,9 @@ const getAssetGeneratorConfig = (environment, sourcePath) => {
       `${sourcePath}/type3grid/Map Tax Types/`,
       `${sourcePath}/type3grid/Map Payment Codes/`,
       `${sourcePath}/type3grid/MessageViewer/`,
-      `${sourcePath}/type3grid/PA Services Tax Report/`,
       `${sourcePath}/type4grid/`,
       `${sourcePath}/cruds/`,
-      `${sourcePath}/sampleDemo/`,
-      `${sourcePath}/type2grid/What if employee`,
-      `${sourcePath}/type2grid/TaxLocator`
+      `${sourcePath}/sampleDemo/`
      ],
     groupBy: [
       {

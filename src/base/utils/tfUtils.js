@@ -20,6 +20,7 @@ import {
 } from "bsiuilib";
 import * as CellsRenderer from "../../app/metadata/cellsrenderer";
 import store from "../../tf_setup_n_maintenance";
+import {dataSetsGridInput, buildDataSetsSaveInput, buildDataSetsDeleteInput} from '../utils/datasetsUtil'
 /**
  * buildModuleAreaLinks
  * @param {*} apps
@@ -287,8 +288,11 @@ export function buildGridDataInput(pageid, store) {
   let stDate = getStartDate(filterData);
   let enDate = getEndDate(filterData);
   let input;
-  if (pageid === 'optionalRateOverride') {
-    input = optionalRateOverrideGridInput(pageid, filterData, stDate, enDate, state);
+  //Plesae add utils method for any specific page in <page-name>util.js file.
+  //For e.g.: datasetsUtil.js
+  //Remove any unwanted method/code from util.js file.  
+  if (pageid === 'dataSets') {
+    input = dataSetsGridInput(pageid, filterData, stDate, enDate, state);
   } else {
     if (state.parentData) { //Reset Parent Data
       let parentData = {};
@@ -594,8 +598,8 @@ export function getUsageDataCode(formdata) {
  */
 export function buildDeleteInput(pageid, store, formdata, mode) {
   let state = store.getState();
-  if (pageid === "pageId") {
-    
+  if (pageid === 'dataSets') {
+    return buildDataSetsDeleteInput(pageid, formdata, mode, state);
   } else {
     console.log("formdata");
     console.log(formdata);
@@ -645,8 +649,8 @@ export function buildPdfInput(pageid, store, formdata, mode) {
   }
 }
 export function buildSaveInputForPage(pageid, formdata, editMode, state) {
-  if (pageid === "pageId") {
-    
+  if (pageid === 'dataSets') {
+    return buildDataSetsSaveInput(pageid, formdata, editMode, state);;
   } else {
     return buildOtherSaveInput(pageid, formdata, editMode);
   }
