@@ -101,7 +101,7 @@ if(!process.env.SKIP){
   commonConfig.plugins.push(new AssetGenerator(
     getAssetGeneratorConfig(
       process.env.NODE_ENV,
-      "D:/W/TaxFactory/tf-artifacts/tf-new-arch-artifacts/Metadata-Mockdata"
+      "../tf-new-arch-artifacts/Metadata-Mockdata"
     )
   ));
 }
