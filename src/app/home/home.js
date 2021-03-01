@@ -131,7 +131,7 @@ class TFHome extends Component {
       <div style={{ marginTop: 0 }}>
         <Container fluid style={{ overflowY: "auto", minHeight: "calc(100vh - 75px)" }}>
           <SearchBar
-            title="Setup And Maintenance"
+            title="Setup & Maintenance"
             sectionLayout={this.sectionLayout}
             options={this.getOptions()}
             favorites={this.props.favorites}
