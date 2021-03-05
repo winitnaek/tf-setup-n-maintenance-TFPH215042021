@@ -35,8 +35,8 @@ export const tftools = [
   },
   {
     value: 'SM',
-    label: 'Cyclic',
-    desc: 'Cyclic',
+    label: 'Cyclic bulletin',
+    desc: 'Cyclic bulletin',
     id: 'Cyclic',
     type: UI_EXTN,
     link: false,
