@@ -11,8 +11,8 @@ export const tftools = [
   ...tfScreens,
   {
     value: 'SM',
-    label: 'Regulatory bulletin',
-    desc: 'Regulatory bulletin',
+    label: 'Regulatory Bulletin',
+    desc: 'Regulatory Bulletin',
     id: 'RegulatoryBulletin',
     type: UI_EXTN,
     link: true,
@@ -35,8 +35,8 @@ export const tftools = [
   },
   {
     value: 'SM',
-    label: 'Cyclic bulletin',
-    desc: 'Cyclic bulletin',
+    label: 'Cyclic Bulletin',
+    desc: 'Cyclic Bulletin',
     id: 'Cyclic',
     type: UI_EXTN,
     link: false,
