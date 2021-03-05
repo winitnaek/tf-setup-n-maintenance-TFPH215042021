@@ -31,6 +31,7 @@ import {
   formatFieldData
 } from "./base/utils/tfUtils";
 import { setModuleAreas } from "./app/home/actions/moduleLinksActions";
+import { getFavoriteLinks } from "./app/home/actions/favoriteLinksActions";
 import CustomGrid from "./app/components/CustomGrid";
 import ReusablePage from "./app/components/ReusablePage";
 import { UI_COMP, UI_PAGE, UI_TEST, tftools } from "./base/constants/TFTools";
@@ -72,6 +73,7 @@ function renderTFSetupNMaintenance(elem, renderName, renderCtx) {
   if (renderName === rname.RN_TF_HOME) {
     showPrgress(elem);
     store.dispatch(setModuleAreas(moduleAreas));
+    store.dispatch(getFavoriteLinks(userId,3));
     setTimeout(
       function () {
         renderTFHome(elem);

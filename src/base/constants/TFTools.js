@@ -11,13 +11,15 @@ export const tftools = [
   ...tfScreens,
   {
     value: 'SM',
-    label: 'Regulatory bulletin ',
-    desc: 'Regulatory bulletin ',
-    id: 'RegulatoryBulletin ',
+    label: 'Regulatory bulletin',
+    desc: 'Regulatory bulletin',
+    id: 'RegulatoryBulletin',
     type: UI_EXTN,
-    link: false,
+    link: true,
     href:"https://mybsiconnect.force.com/Product_Reg_Bulletin_Landing_Page?id=01tU0000000HRQiIAO",
-    section:'Maintenance Tools'
+    section:'Maintenance Tools',
+    linkid:8,
+    module:3
   },
   {
     value: 'SM',
@@ -27,7 +29,9 @@ export const tftools = [
     type: UI_EXTN,
     link: false,
     href:"https://mybsiconnect.force.com/Product_Reg_Bulletin_Landing_Page?id=01tU0000000HRQiIAO&amp;locator=1",
-    section:'Maintenance Tools'
+    section:'Maintenance Tools',
+    linkid:10,
+    module:3
   },
   {
     value: 'SM',
@@ -37,7 +41,9 @@ export const tftools = [
     type: UI_EXTN,
     link: false,
     href:"https://mybsiconnect.force.com/cp_Product_Cyclic_Landing_PageV2?id=01tU0000000HRQiIAO",
-    section:'Maintenance Tools'
+    section:'Maintenance Tools',
+    linkid:11,
+    module:3
   },
   {
     value: 'SM',
@@ -46,7 +52,9 @@ export const tftools = [
     id: 'messageToSuppress',
     type: 'page',
     link: true,
-    section:'Configuration'
+    section:'Configuration',
+    linkid:301,
+    module:3
   }
 ];
 
