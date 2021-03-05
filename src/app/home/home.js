@@ -110,7 +110,7 @@ class TFHome extends Component {
   getOptions() {
     let excluededPages=[];
     if(!isMock()){
-      excluededPages = ["testHarness", "selectSamplePage", "dateFieldDoc","UQ","CD","GD","CT","MT","TS"];
+      excluededPages = ["testHarness", "selectSamplePage", "dateFieldDoc","UQ","CD","GD","CT","MT","TS","PD"];
     }
     let arr = tftools.filter(tool => !excluededPages.includes(tool.value)).sort(this.GetSortOrder("label"));
     console.log(arr);
