@@ -1,10 +1,12 @@
 import AppError from '../../../base/utils/AppError';
 import {ADMIN_ERROR_MSG} from '../../../base/utils/AppErrorEvent';
+import {generateUrl} from "bsiuilib";
 class favoriteLinksAPI { 
 
   static getFavoriteLinks(loginId,moduleId) {
     let paramurl = `${'?login='}${loginId}${'&module='}${moduleId}`;
-    var svcs_url = `${'/tfws/r/v1/FavoriteLinksService/getFavoriteLinks'}${paramurl}`;
+    var url = `${'/FavoriteLinksService/getFavoriteLinks'}${paramurl}`;
+    let svcs_url = generateUrl.buildURL(url);
     return fetch(svcs_url,{
         credentials: 'same-origin'
     }).then(response => {
@@ -21,7 +23,8 @@ class favoriteLinksAPI {
   }
   static deleteFavoriteLink(loginId,linkid, moduleId) {
     let paramurl = `${'?login='}${loginId}${'&linkid='}${linkid}${'&module='}${moduleId}`;
-    var svcs_url = `${'/tfws/r/v1/FavoriteLinksService/deleteFavoriteLink'}${paramurl}`;
+    var url = `${'/FavoriteLinksService/deleteFavoriteLink'}${paramurl}`;
+    let svcs_url = generateUrl.buildURL(url);
     return fetch(svcs_url,{
         credentials: 'same-origin'
     }).then(response => {
@@ -38,7 +41,8 @@ class favoriteLinksAPI {
   }
   static addToFavoriteLinks(loginId,linkid, moduleId) {
     let paramurl = `${'?login='}${loginId}${'&linkid='}${linkid}${'&module='}${moduleId}`;
-    var svcs_url = `${'/tfws/r/v1/FavoriteLinksService/addToFavoriteLinks'}${paramurl}`;
+    var url = `${'/FavoriteLinksService/addToFavoriteLinks'}${paramurl}`;
+    let svcs_url = generateUrl.buildURL(url);
     return fetch(svcs_url,{
         credentials: 'same-origin'
     }).then(response => {
