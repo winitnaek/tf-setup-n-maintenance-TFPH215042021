@@ -13,7 +13,7 @@ import { setFilterFormData } from "../actions/filterFormActions";
 import { tftools } from "../../base/constants/TFTools";
 import { ReusableModal, DynamicForm, FlyoutMenu } from "bsiuilib";
 import { saveFavoriteLinks } from "./favoriteLinksActions";
-
+import {setUnSetFavorite} from "../home/actions/favoriteUtil";
 class Welcome extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +26,7 @@ class Welcome extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.toggle = this.toggle.bind(this);
     this.renderMe = this.renderMe.bind(this);
+    this.setFavorite = this.setFavorite.bind(this);
   }
 
   handleClose() {
@@ -38,7 +39,15 @@ class Welcome extends Component {
       filter: value
     });
   }
-
+  /**
+   * setFavorite
+   * @param {*} favorites 
+   * @param {*} selectedFavorite 
+   * @param {*} action 
+   */
+  setFavorite(favorites, selectedFavorite, action) {
+    setUnSetFavorite(favorites, selectedFavorite, action);
+  }
   renderMe(pageId, values, filter) {
     filter && this.props.setFilterFormData(values);
     let data = tftools.find(tftool => tftool.id == pageId);
@@ -78,7 +87,7 @@ class Welcome extends Component {
             favorites={this.props.favorites}
             options={tftools}
             showSideMenu={false}
-            setFavorite={this.props.saveFavoriteLinks}
+            setFavorite={this.setFavorite}
             renderApplication={this.toggle}
             sectionLayout={this.props.sectionLayout}
           />

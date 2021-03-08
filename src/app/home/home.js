@@ -5,7 +5,7 @@ import { Row, Col, Container } from "reactstrap";
 import * as formMetaData from "../metadata/metaData";
 import * as fieldData from "../metadata/fieldData";
 import { setModuleLinks } from "./actions/moduleLinksActions";
-import { saveFavoriteLinks } from "./favoriteLinksActions";
+import { saveFavoriteLinks} from "./favoriteLinksActions";
 import { tftools } from "../../base/constants/TFTools";
 import { formatFieldData } from "../../base/utils/tfUtils";
 import { ReusableModal, DynamicForm, FlyoutMenu, SearchBar } from "bsiuilib";
@@ -15,6 +15,7 @@ import * as styles from "../../base/constants/AppConstants";
 import { getUsageData } from "../api/getUsageDataAPI";
 import formDataAPI from "../api/formDataAPI";
 import savegriddataAPI from "../api/savegriddataAPI";
+import {setUnSetFavorite} from "../home/actions/favoriteUtil";
 import { isMock } from '../../tf_setup_n_maintenance';
 class TFHome extends Component {
   constructor(props) {
@@ -63,6 +64,7 @@ class TFHome extends Component {
     this.toggle = this.toggle.bind(this);
     this.renderApplication = this.renderApplication.bind(this);
     this.renderMe = this.renderMe.bind(this);
+    this.setFavorite = this.setFavorite.bind(this);
   }
 
   toggle(pageData) {
@@ -95,13 +97,24 @@ class TFHome extends Component {
       this.toggle(data);
     }
   }
+  /**
+   * setFavorite
+   * @param {*} favorites 
+   * @param {*} selectedFavorite 
+   * @param {*} action 
+   */
+  setFavorite(favorites, selectedFavorite, action) {
+    setUnSetFavorite(favorites, selectedFavorite, action);
+  }
 
   getOptions() {
     let excluededPages=[];
     if(!isMock()){
-      excluededPages = ["testHarness", "selectSamplePage", "dateFieldDoc","UQ","CD","GD","CT","MT","TS"];
+      excluededPages = ["testHarness", "selectSamplePage", "dateFieldDoc","UQ","CD","GD","CT","MT","TS","PD"];
     }
-    return tftools.filter(tool => !excluededPages.includes(tool.value)).sort(this.GetSortOrder("label"));
+    let arr = tftools.filter(tool => !excluededPages.includes(tool.value)).sort(this.GetSortOrder("label"));
+    console.log(arr);
+    return arr ;//tftools.filter(tool => !excluededPages.includes(tool.value)).sort(this.GetSortOrder("label"));
   }
 
   GetSortOrder(prop) {
@@ -135,7 +148,7 @@ class TFHome extends Component {
             sectionLayout={this.sectionLayout}
             options={this.getOptions()}
             favorites={this.props.favorites}
-            setFavorite={this.props.saveFavoriteLinks}
+            setFavorite={this.setFavorite}
             renderApplication={this.renderApplication}
           />
 
@@ -162,7 +175,7 @@ class TFHome extends Component {
                   favorites={this.props.favorites}
                   options={tftools}
                   showSideMenu={false}
-                  setFavorite={this.props.saveFavoriteLinks}
+                  setFavorite={this.setFavorite}
                   renderApplication={this.renderApplication}
                   sectionLayout={this.sectionLayout}
                 />
@@ -181,6 +194,6 @@ function mapStateToProps(state) {
   };
 }
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setModuleLinks, saveFavoriteLinks, setFilterFormData, setFormData }, dispatch);
+  return bindActionCreators({ setModuleLinks, saveFavoriteLinks, setFilterFormData, setFormData}, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TFHome);

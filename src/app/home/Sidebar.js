@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { linkColStyle, favoriteLinkStyle, favoriteListStyle } from "../../css/sidebar-css";
 import { Row, Col, UncontrolledTooltip, Container, Button } from "reactstrap";
-
+import {setUnSetFavorite} from "../home/actions/favoriteUtil";
 class Sidebar extends Component {
   constructor(props) {
     super(props);
@@ -14,8 +14,9 @@ class Sidebar extends Component {
   }
 
   removeFavorite(fav) {
+    const favorite = this.props.favorites.filter(option => option.id == fav.id);
     const favorites = this.props.favorites.filter(option => option.id !== fav.id);
-    this.props.setFavorite(favorites);
+    setUnSetFavorite(favorites,favorite,0);
   }
 
   render() {
