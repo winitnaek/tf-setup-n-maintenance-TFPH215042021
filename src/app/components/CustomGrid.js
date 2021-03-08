@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { tftools } from "../../base/constants/TFTools";
-import { ReusableGrid, ConfirmModal, ReusableAlert } from "bsiuilib";
+import { ReusableGrid, ConfirmModal, ViewPDF, ReusableAlert } from "bsiuilib";
 import { setFilterFormData } from "../actions/filterFormActions";
 import { setFormData } from "../actions/formActions";
 //import { getRecentUsage } from "../actions/usageActions";
@@ -27,12 +27,18 @@ class CustomGrid extends Component {
       clickedPageId: "",
       modalGridData: [],
       showSummary: false,
+      showPDF: false,
+      pdfData: {},
+      viewPdfMode: false,
       showAdditonalInfo: null,
       status: "success",
       showActionAlert:false,
       aheader:'',
       abody:'',
-      abtnlbl:''
+      abtnlbl:'',
+      isSelectAll: undefined,
+      saveSelected: false,
+      value: '',
     };
 
     this.renderGrid = pgData => {
@@ -54,6 +60,26 @@ class CustomGrid extends Component {
       //  this.props.setFormData(data)    //  This is needed for subsequent edits to get form data
       this.props.setFilterFormData(formData); // This is used to make the api call to render the grid
     };
+
+    this.handlePDF = async (event, fromBar) => {
+      event.preventDefault();
+        const { pageid, formData } = this.props;
+        let data = undefined;
+        if(pageid === "permissions") {
+          data = [];
+          let _id = document.querySelector("div[role='grid']").id;
+          const griddata = $("#" + _id).jqxGrid("getdatainformation");
+          for (let i = 0; i < griddata.rowscount; i++) {
+            const rowData = $("#" + _id).jqxGrid("getrenderedrowdata", i);
+            data.push(rowData);
+          }  
+        }
+        const pdfData = await getPdfDataAPI.getPdfData(pageid, data, undefined, fromBar);
+        this.setState({
+          viewPdfMode: !this.state.viewPdfMode,
+          pdfData,
+        });
+    }
     
 
     this.getMarginTop = () =>  {
@@ -98,6 +124,10 @@ class CustomGrid extends Component {
     this.renderAlert = this.renderAlert.bind(this);
     this.showActionMessage = this.showActionMessage.bind(this);
     this.hideUIAlert=this.hideUIAlert.bind(this);
+    this.handleHidePDF = this.handleHidePDF.bind(this);
+    this.handleShowPDF = this.handleShowPDF.bind(this);
+    this.clickFromOutside = this.clickFromOutside.bind(this);
+    this.saveFromOutside = this.saveFromOutside.bind(this);
   }
 
   componentDidMount() {
@@ -108,6 +138,31 @@ class CustomGrid extends Component {
       showAlert: !!metaInfo
     });
   }
+
+  handleHidePDF() {
+    this.setState({ showPDF: false })
+  }
+
+  handleShowPDF(rowdata, title) {
+    this.renderPDFData(rowdata,title);
+  }
+
+  renderPDFData(pdfData,title){
+    this.setState({
+      showPDF: true,
+      title:title,
+      pdfData :pdfData
+    });
+  }
+
+  renderErrorPDF(yrEndTaxDoc) {
+    var printFrame = document.getElementById('pdfi-frametf');
+    let errorContent = `<html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head><body><div class="alert alert-danger" style="margin:3px;" role="alert"><strong>Error: </strong>Unable to Get Year End Tax Document. Please contact your system administrator.</div></body></html>`;
+    if (printFrame) {
+        printFrame.height='100'
+        printFrame.src = "data:text/html;charset=utf-8,"+errorContent
+    }
+}
   
   renderAlert(isAlert) {
     return (
@@ -154,10 +209,12 @@ class CustomGrid extends Component {
     )
   }
 
-  handleRunLocator(clickPageId, gridDef) {
+  handleRunLocator(clickPageId, gridDef, value) {
+    if(value) sessionStorage.setItem('newDataName', value);
     this.setState(
       {
-        clickedPageId: clickPageId
+        clickedPageId: clickPageId,
+        value,
       },
       () => {
         const isAlert = gridDef.hasAlert;
@@ -196,6 +253,14 @@ class CustomGrid extends Component {
     });
   }
 
+  clickFromOutside(isSelectAll) {
+    this.setState({ isSelectAll });
+  }
+
+  saveFromOutside() {
+    this.setState({ saveSelected: true });
+  }
+
   parentInfoAction(formData){
     this.props.setParentInfo(formData);
   };
@@ -208,13 +273,20 @@ class CustomGrid extends Component {
   async getGridPopupData() {
     const data = await this.props.getDataForChildGrid({
       pgid: this.state.clickedPageId,
-      showSummary: this.state.showSummary
-    });
-    const { griddef } = this.props.metadata;
-    this.setState({
-      modalGridData: data.length === 1 && griddef.responseKey ? data[0][responseKey] : data,
-      isOpen: true
-    });
+      showSummary: this.state.showSummary,
+      dataSetName: this.state.value,
+    }).then(response => {
+    if(!this.state.value) {
+      const { griddef } = this.props.metadata;
+      this.setState({
+        modalGridData: data.length === 1 && griddef.responseKey ? data[0][responseKey] : data,
+        isOpen: true
+      });
+    } else {
+      const data = tftools.find(tool => tool.id === this.state.clickedPageId);
+      this.renderGrid(data);
+    }
+  });
   }
 
   async renderAdditionalInfo(pgid, values) {
@@ -250,6 +322,7 @@ class CustomGrid extends Component {
     return (
       <Fragment>
          {this.renderAlert(griddef.hasAlert)}
+         <ViewPDF view={this.state.viewPdfMode} handleHidePDF={() => this.setState({viewPdfMode: false })} pdfData={this.state.pdfData} />
         <ReusableGrid
           pageid={pageid}
           metadata={metadata}
@@ -280,6 +353,10 @@ class CustomGrid extends Component {
           fillParentInfo={populateParentData}
           renderAdditionalInfo={this.renderAdditionalInfo}
           showActionMessage={this.showActionMessage}
+          isSelectAll={this.state.isSelectAll}
+          saveSelected={this.state.saveSelected}
+          handleChange={this.handleRunLocator}
+          dataSetName={this.state.value}
         />
         {griddef.hasButtonBar && griddef.hasButtonBar == true ? (
           <ButtonBar
@@ -289,6 +366,9 @@ class CustomGrid extends Component {
             permissions={permissions}
             tftools={tftools}
             handleRunLocator={(clickedPageId) => this.handleRunLocator(clickedPageId, griddef)}
+            handleCheckAll={this.clickFromOutside}
+            handlePdf={(event) => this.handlePDF(event, true)}
+            handleSaveAll={this.saveFromOutside}
           />
         ) : null}
         <ConfirmModal showConfirm={this.state.showAlert} handleOk={this.handleOk} {...metaInfo} />

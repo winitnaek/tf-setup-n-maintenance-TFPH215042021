@@ -7,6 +7,7 @@ import {
   asyncselfldsmap,
   generateDataMap,
   viewPDFMap,
+  viewPDFMapButtonBar,
   saveAsdatamap,
 } from "../constants/TFTools";
 import mockDataMapper from "../../app/metadata/_mockDataMap";
@@ -21,6 +22,8 @@ import {
 import * as CellsRenderer from "../../app/metadata/cellsrenderer";
 import store from "../../tf_setup_n_maintenance";
 import {dataSetsGridInput, buildDataSetsSaveInput, buildDataSetsDeleteInput} from '../utils/datasetsUtil'
+import {buildLoginsSaveInput,buildLoginsDeleteInput, buildPermissionsSaveInput,permissionsGridInput, permissionPDfInput} from './laPermissionsUtil';
+import {auditLogViewerGridInput} from './aLogViewerUtil'
 /**
  * buildModuleAreaLinks
  * @param {*} apps
@@ -231,6 +234,24 @@ export function format(fmt, ...args) {
     }
   });
 }
+
+/**
+ * buildMapLinkDataInput
+ * @param {*} pageid
+ */
+export function buildMapLinkDataInput(pageid, formFilterData) {
+  const parentInfo = store.getState().parentInfo;
+  let input = {
+    "pageId":pageid,        
+    "userId": appUserId(),      
+    "dataset":appDataset(),
+    "login": parentInfo.loginName,
+    "selectedDataset": sessionStorage.getItem('newDataName') || appDataset(),
+   
+}
+  return input;
+}
+
 /**
  * buildGridInputForPage
  * @param {*} pageid 
@@ -239,6 +260,7 @@ export function format(fmt, ...args) {
  * @param {*} enDate 
  */
 export function buildGridInputForPage(pageid, filterData, stDate, enDate) {
+  const parentInfo = store.getState().parentInfo;
   let input = {
     pageId: pageid,
     dataset: appDataset(),
@@ -272,7 +294,8 @@ export function buildGridInputForPage(pageid, filterData, stDate, enDate) {
     taxN: filterData.taxN,
     employee: filterData.employeeCode,
     companyCode: filterData.cpycode,
-    empGroup: filterData.id
+    empGroup: filterData.id,
+    login: filterData.loginName || parentInfo.loginName,
   };
   return input;
 }
@@ -293,6 +316,10 @@ export function buildGridDataInput(pageid, store) {
   //Remove any unwanted method/code from util.js file.  
   if (pageid === 'dataSets') {
     input = dataSetsGridInput(pageid, filterData, stDate, enDate, state);
+  } else  if (pageid === 'auditLogViewer') {
+    input = auditLogViewerGridInput(pageid, filterData, stDate, enDate, state);
+  } else  if (pageid === 'permissions') {
+    input = permissionsGridInput(pageid, filterData, stDate, enDate, state);
   } else {
     if (state.parentData) { //Reset Parent Data
       let parentData = {};
@@ -462,8 +489,19 @@ export function buildAutoCompSelInput(pageid, store, patten, formValues = {}) {
     input = {
         "authCode": patten[0].authId
     }
-
     return input;
+  }
+
+  if(pageid === "permissionFor") {
+    return {
+      "login": state.parentInfo.loginName
+    }
+  }
+
+  if(pageid === "selectLogin") {
+    return {
+      "login": patten
+    }
   }
   
   if (pageid === "formulaTitle") {
@@ -600,6 +638,8 @@ export function buildDeleteInput(pageid, store, formdata, mode) {
   let state = store.getState();
   if (pageid === 'dataSets') {
     return buildDataSetsDeleteInput(pageid, formdata, mode, state);
+  }else if (pageid === 'logins') {
+      return buildLoginsDeleteInput(pageid, formdata, mode, state);
   } else {
     console.log("formdata");
     console.log(formdata);
@@ -635,8 +675,8 @@ export function buildDeleteInput(pageid, store, formdata, mode) {
 export function buildPdfInput(pageid, store, formdata, mode) {
   const state = store.getState();
   const filterData = state.formFilterData;
-  if(pageid==='pageId'){
-    
+  if(pageid==='permissions'){
+      return permissionPDfInput(pageid, store, formdata);
   }else{
     return {
       dataset: appDataset(),
@@ -650,8 +690,13 @@ export function buildPdfInput(pageid, store, formdata, mode) {
 }
 export function buildSaveInputForPage(pageid, formdata, editMode, state) {
   if (pageid === 'dataSets') {
-    return buildDataSetsSaveInput(pageid, formdata, editMode, state);;
-  } else {
+    return buildDataSetsSaveInput(pageid, formdata, editMode, state);
+  }else if (pageid === 'logins') {
+      return buildLoginsSaveInput(pageid, formdata, editMode, state);;
+  }
+  else if (pageid === 'permissions') {
+    return buildPermissionsSaveInput(pageid, formdata, editMode, state);;
+}  else {
     return buildOtherSaveInput(pageid, formdata, editMode);
   }
 }
@@ -809,6 +854,25 @@ export function deleteUrl(id) {
 
 export function viewPDFUrl(id) {
   let viewPdf = viewPDFMap.find(metadatam => {
+    if (id == metadatam.id) return metadatam;
+  });
+  let url = generateUrl.buildURL(viewPdf.url);
+  if (isMock()) {
+    if (mockDataMapper[id]) {
+      url = mockDataMapper[id];
+    } else {
+      let viewPdf = mockdelmap.find(metadatam => {
+        if (id == metadatam.id) return metadatam;
+      });
+      url = viewPdf.url;
+    }
+  }
+  console.log("VIEW PDF URL %s for page %s", url, id);
+  return url;
+}
+
+export function viewPDFUrlButtonBar(id) {
+  let viewPdf = viewPDFMapButtonBar.find(metadatam => {
     if (id == metadatam.id) return metadatam;
   });
   let url = generateUrl.buildURL(viewPdf.url);

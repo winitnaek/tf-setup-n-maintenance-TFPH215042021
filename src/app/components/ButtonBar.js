@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, UncontrolledTooltip } from "reactstrap";
+import { Row, UncontrolledTooltip, Button } from "reactstrap";
 class ButtonBar extends Component {
   constructor(props) {
     super(props);
@@ -64,14 +64,9 @@ class ButtonBar extends Component {
       </div>
     );
     let deleteAll = (
-      <div>
-        <a href="#" id="deleteAll">
-          <i class="fas fa-calendar-minus fa-lg fa-2x"></i>
-        </a>
-        <UncontrolledTooltip placement="right" target="deleteAll">
-          <span>Delete All</span>
-        </UncontrolledTooltip>
-      </div>
+      <Button id="deleteAll" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleDeleteAll(this.props.pageid)}>
+        <i class="fas fa-calendar-minus fa-lg fa-1x"></i> Delete All
+      </Button>
     );
     let findRedundantOverrides = (
       <div>
@@ -137,6 +132,26 @@ class ButtonBar extends Component {
           <span> View Pdf Summary </span>
         </UncontrolledTooltip>
       </div>
+    );
+    let checkAll = (
+      <Button id="checkAll" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleCheckAll(true)}>
+        <i class="fas fa-check fa-lg fa-1x"></i> Check All
+      </Button>
+    );
+    let uncheckAll = (
+      <Button id="uncheckAll" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleCheckAll(false)}>
+        <i class="fas fa-times fa-lg fa-1x"></i> Uncheck All
+      </Button>
+    );
+    let saveCheck = (
+      <Button id="saveCheck" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleSaveAll(this.props.pageid)}>
+        <i class="fas fa-save fa-lg fa-1x"></i> Save
+      </Button>
+    );
+    let viewPdf = (
+      <Button id="saveCheck" color="primary" size="sm" style={{marginRight:'20px'}} onClick={(event) => this.props.handlePdf(event)}>
+        <i class="far fa-file-pdf fa-lg fa-1x"></i> View Pdf
+      </Button>
     );
 
     if(this.props.pageid==='whatifEmp' || this.props.pageid==='whatifDeductionsBenefit' && this.props.pageid==='taxLocator'){ 
@@ -218,6 +233,10 @@ class ButtonBar extends Component {
       findRedundantOverrides=null;
       customdataBackup=null;
       viewPdfSummary = null;
+      checkAll = null;
+      uncheckAll = null;
+      saveCheck = null;
+      viewPdf = null;
     }
     else if(this.props.pageid==='customrestoreStatus' || this.props.pageid==='manualupdateStatus' || this.props.pageid==="databaseloadStatus" ){ //customdataRestore
       taxLocator=null;
@@ -230,6 +249,10 @@ class ButtonBar extends Component {
       customdataRestore = null;
       optionalBackup = null;
       viewPdfSummary = null;
+      checkAll = null;
+      uncheckAll = null;
+      saveCheck = null;
+      viewPdf = null;
     } else if(this.props.pageid==='optionalBackup' || this.props.pageid==='databaseLoad'){ //customdataRestore
       taxLocator=null;
       calculateTaxes=null;
@@ -255,8 +278,39 @@ class ButtonBar extends Component {
       refreshStatusBackup = null;
       showstatusBackup = null;
     }
+    else if(this.props.pageid === "permissions") {
+      taxLocator=null;
+      calculateTaxes=null;
+      runLocatorService=null;
+      addressFromWorksite=null;
+      deleteAll=null;
+      findRedundantOverrides=null;
+      customdataBackup=null;
+      customdataRestore = null;
+      optionalBackup = null;
+      refreshStatusBackup = null;
+      showstatusBackup = null;
+      viewPdfSummary = null;
+    }
+    else if(this.props.pageid === "auditLogViewer") {
+      taxLocator=null;
+      calculateTaxes=null;
+      runLocatorService=null;
+      addressFromWorksite=null;
+      findRedundantOverrides=null;
+      customdataBackup=null;
+      customdataRestore = null;
+      optionalBackup = null;
+      refreshStatusBackup = null;
+      showstatusBackup = null;
+      viewPdfSummary = null;
+      checkAll = null;
+      uncheckAll = null;
+      saveCheck = null;
+      viewPdf = null;
+    }
     return (
-      <Row className="justify-content-around bg-light" style={{ paddingTop: "3px",paddingBottom:'2px',marginTop:'30px',borderRadius:'0.25rem'}}>
+      <Row className="justify-content-center" style={{ paddingTop: "3px",paddingBottom:'2px',marginTop:'15px',borderRadius:'0.25rem'}}>
         {taxLocator}
         {calculateTaxes}
         {runLocatorService}
@@ -269,6 +323,10 @@ class ButtonBar extends Component {
         {showstatusBackup}
         {optionalBackup}
         {viewPdfSummary}
+        {checkAll}
+        {uncheckAll}
+        {saveCheck}
+        {viewPdf}
       </Row>
     );
   }

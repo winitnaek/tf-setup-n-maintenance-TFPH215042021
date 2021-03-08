@@ -1,6 +1,6 @@
 import * as metaData from '../../app/metadata/metaData';
 import tfScreens from '../../app/metadata/_screen_info';
-import { metaDataApiMap, autoCompleteApiMap, deleteDataApiMap, saveDataApiMap, generateApiMap, viewPDFApiMap, saveAsAPIMap } from './ApiMap';
+import { metaDataApiMap, autoCompleteApiMap, deleteDataApiMap, saveDataApiMap, generateApiMap, viewPDFApiMap, saveAsAPIMap,viewPDFButtonBar, deleteAllDataApiMap} from './ApiMap';
 
 export const UI_PAGE = 'page';
 export const UI_COMP = 'comp';
@@ -73,6 +73,11 @@ export const deletedatamap = Object.keys(deleteDataApiMap).map(pageId => ({
   url: deleteDataApiMap[[pageId]]
 }));
 
+export const deletealldatamap = Object.keys(deleteAllDataApiMap).map(pageId => ({
+  id: pageId,
+  url: deleteAllDataApiMap[[pageId]]
+}));
+
 export const savedatamap = Object.keys(saveDataApiMap).map(pageId => ({
   id: pageId,
   url: saveDataApiMap[pageId],
@@ -101,4 +106,9 @@ export const asyncselfldsmap = Object.keys(autoCompleteApiMap).map(fieldId => ({
 export const viewPDFMap = Object.keys(viewPDFApiMap).map(pageId => ({
   id: pageId,
   url: viewPDFApiMap[pageId]
+}));
+
+export const viewPDFMapButtonBar = Object.keys(viewPDFButtonBar).map(pageId => ({
+  id: pageId,
+  url: viewPDFButtonBar[pageId]
 }));

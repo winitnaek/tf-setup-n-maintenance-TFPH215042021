@@ -140,8 +140,8 @@ function renderMessageViewer(elem, pageid, pid) {
   );
 }
 
-const getGridData = ({ pgid, showSummary }) => {
-  let gridInput = buildGridDataInput(pgid, store);
+const getGridData = ({ pgid, showSummary, dataSetName }) => {
+  let gridInput = buildGridDataInput(pgid, store, dataSetName);
   gridInput.showSummary = showSummary;
   return griddataAPI.getGridData(pgid, gridInput).then(response => response);
 };

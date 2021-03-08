@@ -82,12 +82,21 @@ import {
   GET_OPTIONAL_UNEMPLOYMENT_BACKUP,
   GET_OPTIONAL_UNEMPLOYMENT_RESTORE,
   GENERATE_DATABASE_LOAD,
-  SAVE_CUSTOM_DATA_BACKUP
+  SAVE_CUSTOM_DATA_BACKUP,
+  GET_LOGINS,
+  SAVE_LOGINS,
+  DELETE_LOGINS,
+  VIEW_PERMISSION_PDF,
+  GET_AUDIT_LOG_VIEWER,
+  GET_AUDIT_LOG_VIEWER_LOGIN,
+  GET_AUDIT_LOG_VIEWER_DATASET,
+  DELETE_ALL_LOG_VIEWER,
+  DEFAULT_PERMISSION
 } from './ServiceUrls';
 
 export const metaDataApiMap = {
   recentUsage: GET_RECENT_USAGE,
-  auditLogViewer: GET_CUSTOM_TAX_CODES,
+  auditLogViewer: GET_AUDIT_LOG_VIEWER,
   logins: GET_CUSTOM_TAX_CODES,
   messageViewer: GET_MESSAGE_VIEWER,
   messagesViewer: GET_MESSAGES_VIEWER,
@@ -112,7 +121,13 @@ export const metaDataApiMap = {
   customrestoreStatus: './_customrestoreStatus_MockData.json',
   databaseloadStatus: './_databaseloadStatus_MockData.json',
   manualupdateStatus: './_manualupdateStatus_MockData.json',
+  logins: GET_LOGINS,
+  resetDefaultLogin: GET_PERMISSIONS
 };
+
+export const viewPDFButtonBar = {
+  permissions: VIEW_PERMISSION_PDF
+}
 
 export const viewPDFApiMap = {
   manualUpdate: VIEW_PDF_GROUP_OVERRIDE,
@@ -121,11 +136,16 @@ export const viewPDFApiMap = {
 export const deleteDataApiMap = {
   messageViewer: DELETE_ALL_MESSAGES,
   messagesViewer: DELETE_ALL_MESSAGES_BY_RUN_ID,
-  auditLogViewer: DELTE_CUSTOM_PAYMENT,
-  dataSets: DELETE_DATASET
+  dataSets: DELETE_DATASET,
+  logins: DELETE_LOGINS,
+};
+
+export const deleteAllDataApiMap = {
+  auditLogViewer: DELETE_ALL_LOG_VIEWER,
 };
 
 export const saveDataApiMap = {
+  logins: SAVE_LOGINS,
   messageToSuppress: SAVE_SUPPRESS_MESSAGES,
   permissions: SAVE_PERMISSIONS,
   unemploymentCompanyOverrides:GET_UM_EMPLOYMENT_OVERRIDE_SAVE,
@@ -222,5 +242,7 @@ export const autoCompleteApiMap = {
   orOverrideAuth:GET_OPTIONAL_RATE_OVRD_AUTO_COMP_AUTH,
   orOverrideTaxType:GET_OPTIONAL_RATE_OVRD_AUTO_COMP_TAXT,
   orOverrideFormula:GET_OPTIONAL_RATE_OVRD_AUTO_COMP_FORM,
-  orOverrideBsiWage:GET_OPTIONAL_RATE_OVRD_BSI_WAGE
+  orOverrideBsiWage:GET_OPTIONAL_RATE_OVRD_BSI_WAGE,
+  selectLogin: GET_AUDIT_LOG_VIEWER_LOGIN,
+  selectDataSet: GET_AUDIT_LOG_VIEWER_DATASET
 };
