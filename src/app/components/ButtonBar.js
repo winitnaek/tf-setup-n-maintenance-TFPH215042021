@@ -54,14 +54,9 @@ class ButtonBar extends Component {
       </div>
     );
     let customdataBackup = (
-      <div>
-        <a href="#" id="customdataBackup" onClick={() => this.props.handleRunLocator("customdataBackup")}>
-          <i class="fas fa-hdd fa-lg fa-2x"></i>
-        </a>
-        <UncontrolledTooltip placement="right" target="customdataBackup">
-          <span> Backup </span>
-        </UncontrolledTooltip>
-      </div>
+      <Button id="customdataBackup" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleRunLocator("customdataBackup")}>
+        <i class="fas fa-hdd fa-lg fa-1x"></i> Backup
+      </Button>
     );
     let deleteAll = (
       <Button id="deleteAll" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleDeleteAll(this.props.pageid)}>
@@ -221,6 +216,10 @@ class ButtonBar extends Component {
       customdataRestore=null;
       optionalBackup = null;
       viewPdfSummary = null;
+      checkAll = null;
+      uncheckAll = null;
+      saveCheck = null;
+      viewPdf = null;
     }else if(this.props.pageid==='customdataRestore' || this.props.pageid==='customdataBackup'){ //customdataRestore
       taxLocator=null;
       calculateTaxes=null;
@@ -265,6 +264,10 @@ class ButtonBar extends Component {
       findRedundantOverrides = null;
       customdataRestore=null;
       viewPdfSummary = null;
+      checkAll = null;
+      uncheckAll = null;
+      saveCheck = null;
+      viewPdf = null;
     } else if(this.props.pageid === "manualUpdate") {
       taxLocator=null;
       calculateTaxes=null;
@@ -277,6 +280,10 @@ class ButtonBar extends Component {
       optionalBackup = null;
       refreshStatusBackup = null;
       showstatusBackup = null;
+      checkAll = null;
+      uncheckAll = null;
+      saveCheck = null;
+      viewPdf = null;
     }
     else if(this.props.pageid === "permissions") {
       taxLocator=null;

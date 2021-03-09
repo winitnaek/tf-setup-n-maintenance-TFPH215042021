@@ -14,3 +14,18 @@ export function auditLogViewerGridInput(pageId, formData, stDate, enDate, state)
     };
     return input;
   }
+
+  /**
+ * auditLogViewerDeleteAll
+ * @param {*} pageid 
+ * @param {*} formdata 
+ * @param {*} editMode 
+ * @param {*} state 
+ */
+export function buildAuditLogViewerDeleteAll(pageid, formdata, editMode, state) {
+  let input = {
+    "login":"TF11",
+    "dataset":"DS1"
+  };
+  return input;
+}

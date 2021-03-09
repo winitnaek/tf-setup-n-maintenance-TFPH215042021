@@ -123,6 +123,9 @@ class CustomGrid extends Component {
     this.renderAdditionalInfo = this.renderAdditionalInfo.bind(this);
     this.renderAlert = this.renderAlert.bind(this);
     this.showActionMessage = this.showActionMessage.bind(this);
+    this.handleDeleteAll = this.handleDeleteAll.bind(this);
+    this.handleConfirmDeleteOk = this.handleConfirmDeleteOk.bind(this);
+    this.handleConfirmDeleteCancel = this.handleConfirmDeleteCancel.bind(this);
     this.hideUIAlert=this.hideUIAlert.bind(this);
     this.handleHidePDF = this.handleHidePDF.bind(this);
     this.handleShowPDF = this.handleShowPDF.bind(this);
@@ -162,6 +165,38 @@ class CustomGrid extends Component {
         printFrame.height='100'
         printFrame.src = "data:text/html;charset=utf-8,"+errorContent
     }
+}
+
+handleDeleteAll(clickPageId) {
+  if(clickPageId==='auditLogViewer'){
+    this.showConfirm(true,'Warning!','Are you sure you want to delete all?');
+  }
+}
+showConfirm(cshow, cheader, cbody){
+  this.setState({
+      showConfirm: cshow,
+      cheader:cheader,
+      cbody:cbody
+  });
+}
+handleConfirmDeleteOk(){
+  this.setState({
+    showConfirm: false
+  });
+  if(this.props.pageid==='auditLogViewer'){
+    deletegriddataAPI.deleteAllGridData(this.props.pageid).then().then((response) => response).then((repos) => {
+      alert(repos.message)
+      const data = tftools.find(tool => tool.id === this.props.pageid);
+      if (data) {
+        renderTFConfigNTaxes("pageContainer", data);
+      }
+    });
+  }
+}
+handleConfirmDeleteCancel(){
+    this.setState({
+        showConfirm: !this.state.showConfirm
+    });
 }
   
   renderAlert(isAlert) {
@@ -366,12 +401,22 @@ class CustomGrid extends Component {
             permissions={permissions}
             tftools={tftools}
             handleRunLocator={(clickedPageId) => this.handleRunLocator(clickedPageId, griddef)}
+            handleDeleteAll={this.handleDeleteAll}
             handleCheckAll={this.clickFromOutside}
             handlePdf={(event) => this.handlePDF(event, true)}
             handleSaveAll={this.saveFromOutside}
           />
         ) : null}
-        <ConfirmModal showConfirm={this.state.showAlert} handleOk={this.handleOk} {...metaInfo} />
+        <ConfirmModal 
+          showConfirm={this.state.showConfirm} 
+          okbtnlbl='OK' 
+          cancelbtnlbl='Cancel' 
+          cheader={this.state.cheader} 
+          cbody={this.state.cbody} 
+          handleOk={this.handleConfirmDeleteOk} 
+          handleCancel={this.handleConfirmDeleteCancel} 
+          {...metaInfo} 
+        />
         <ReusableAlert handleClick={this.hideUIAlert}  showAlert={this.state.showActionAlert} aheader={this.state.aheader} abody={this.state.abody} abtnlbl={'Ok'}/>;
         <Modal isOpen={this.state.isOpen} size="lg" style={gridStyles.modal}>
           <ModalHeader toggle={this.toggle}></ModalHeader>

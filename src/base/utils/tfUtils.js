@@ -7,6 +7,7 @@ import {
   asyncselfldsmap,
   generateDataMap,
   viewPDFMap,
+  deletealldatamap,
   viewPDFMapButtonBar,
   saveAsdatamap,
 } from "../constants/TFTools";
@@ -23,7 +24,7 @@ import * as CellsRenderer from "../../app/metadata/cellsrenderer";
 import store from "../../tf_setup_n_maintenance";
 import {dataSetsGridInput, buildDataSetsSaveInput, buildDataSetsDeleteInput} from '../utils/datasetsUtil'
 import {buildLoginsSaveInput,buildLoginsDeleteInput, buildPermissionsSaveInput,permissionsGridInput, permissionPDfInput} from './laPermissionsUtil';
-import {auditLogViewerGridInput} from './aLogViewerUtil'
+import {auditLogViewerGridInput,buildAuditLogViewerDeleteAll} from './aLogViewerUtil'
 /**
  * buildModuleAreaLinks
  * @param {*} apps
@@ -498,9 +499,9 @@ export function buildAutoCompSelInput(pageid, store, patten, formValues = {}) {
     }
   }
 
-  if(pageid === "selectLogin") {
+  if(pageid === "selectDataSet") {
     return {
-      "login": patten
+      login: patten || '',
     }
   }
   
@@ -669,6 +670,17 @@ export function buildDeleteInput(pageid, store, formdata, mode) {
       runId: formFilterData.runid
     };
     return input;
+  }
+}
+
+export function buildDeleteAllInput(pageid, store, formdata, mode) {
+  let state = store.getState();
+  if (pageid === 'auditLogViewer') {
+    return buildAuditLogViewerDeleteAll(pageid, formdata, mode, state);
+  }else{
+    return {
+      dataset: appDataset(),
+    }
   }
 }
 
@@ -849,6 +861,15 @@ export function deleteUrl(id) {
     }
   }
   console.log("Delete URL %s for page %s", url, id);
+  return url;
+}
+
+export function deleteAllUrl(id) {
+  let deldataallMap = deletealldatamap.find(metadatam => {
+    if (id == metadatam.id) return metadatam;
+  });
+  let url = generateUrl.buildURL(deldataallMap.url);
+  console.log("Delete All URL %s for page %s", url, id);
   return url;
 }
 
