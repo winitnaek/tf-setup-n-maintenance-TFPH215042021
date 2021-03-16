@@ -38,7 +38,7 @@ import { UI_COMP, UI_PAGE, UI_TEST, tftools } from "./base/constants/TFTools";
 import griddataAPI from "./app/api/griddataAPI";
 //Temporary set user in session:======Comment this when deployed with MAC======
 if (!sessionStorage.getItem("up")) {
-  var userProfile = '{"userId":"vinit","dataset":"VINIT","securitytokn":"6d976b4e3ef843119dc1b66017160837","branding":"base64ImageData","userTheme":"Default","roles":["ER"],"applications":[{"id":"73b9a516-c0ca-43c0-b0ae-190e08d77bcc","name":"TaxFactory","accessIds":[{"id":"162ebe14-8d87-44e1-a786-c9365c9d5cd8","visible":true}],"permissions":{"CB":[1,1,1,1,0],"CYB":[1,1,1,1,0],"DB":[1,1,1,1,0],"LB":[1,1,1,1,0],"RB":[1,1,1,1,0],"MF":[1,1,1,1,0],"MV":[1,1,1,1,0],"PN":[1,1,1,1,0],"SM":[1,1,1,1,0]}}],"themeList":[{"id":"Default","name":"Default"},{"id":"HighContrast","name":"HighContrast"},{"id":"WhiteOnBlack","name":"WhiteOnBlack"},{"id":"BlackOnWhite","name":"BlackOnWhite"}]}';
+  var userProfile = '{"userId":"vinit","dataset":"VINIT","securitytokn":"6d976b4e3ef843119dc1b66017160837","branding":"base64ImageData","userTheme":"Default","roles":["ER"],"applications":[{"id":"73b9a516-c0ca-43c0-b0ae-190e08d77bcc","name":"TaxFactory","accessIds":[{"id":"162ebe14-8d87-44e1-a786-c9365c9d5cd8","visible":true}],"permissions":{"CB":[1,1,1,1,0],"CYB":[1,1,1,1,0],"DB":[1,1,1,1,0],"LB":[1,1,1,1,0],"RB":[1,1,1,1,0],"MF":[1,1,1,1,0],"MV":[1,1,1,1,0],"PN":[1,1,1,1,0]}}],"themeList":[{"id":"Default","name":"Default"},{"id":"HighContrast","name":"HighContrast"},{"id":"WhiteOnBlack","name":"WhiteOnBlack"},{"id":"BlackOnWhite","name":"BlackOnWhite"}]}';
   var userdata = JSON.parse(userProfile);
   if (isMock()) {
     let thPerm = [1, 1, 1, 1, 0];
@@ -54,9 +54,12 @@ if (!sessionStorage.getItem("up")) {
 }
 //==============================================================================
 let usrobj = JSON.parse(sessionStorage.getItem("up"));
-
 var dataset = usrobj.dataset;
 var userId = usrobj.userId;
+let PN_RGTS = usrobj.applications[0].permissions["PN"]
+if(PN_RGTS && PN_RGTS[0]===1){
+  usrobj.applications[0].permissions["SM"] = PN_RGTS;
+}
 setModulePermissions(usrobj.applications);
 let moduleAreas = buildModuleAreaLinks(usrobj.applications);
 
@@ -431,7 +434,9 @@ function setModulePermissions(apps) {
           setMFRights(app.permissions.MF);
           setMVRights(app.permissions.MV);
           setPNRights(app.permissions.PN);
-          setSMRights(app.permissions.SM);
+          if(app.permissions.PN && app.permissions.PN[0]=== 1){
+            setSMRights(app.permissions.SM);
+          }
           setCYBRights(app.permissions.CYB);
           setAlRights(app.permissions);
         }
