@@ -10,7 +10,7 @@ export const UI_EXTN = 'externallink';
 export const tftools = [
   ...tfScreens,
   {
-    value: 'SM',
+    value: 'RB',
     label: 'Regulatory Bulletin',
     desc: 'Regulatory Bulletin',
     id: 'RegulatoryBulletin',
@@ -19,10 +19,11 @@ export const tftools = [
     href:"https://mybsiconnect.force.com/Product_Reg_Bulletin_Landing_Page?id=01tU0000000HRQiIAO",
     section:'Maintenance Tools',
     linkid:8,
-    module:3
+    module:3,
+    sid:'SM'
   },
   {
-    value: 'SM',
+    value: 'LB',
     label: 'Locator V3 package',
     desc: 'Locator V3 package',
     id: 'LocatorV3package',
@@ -31,10 +32,11 @@ export const tftools = [
     href:"https://mybsiconnect.force.com/Product_Reg_Bulletin_Landing_Page?id=01tU0000000HRQiIAO&amp;locator=1",
     section:'Maintenance Tools',
     linkid:10,
-    module:3
+    module:3,
+    sid:'SM'
   },
   {
-    value: 'SM',
+    value: 'CYB',
     label: 'Cyclic Bulletin',
     desc: 'Cyclic Bulletin',
     id: 'Cyclic',
@@ -43,7 +45,8 @@ export const tftools = [
     href:"https://mybsiconnect.force.com/cp_Product_Cyclic_Landing_PageV2?id=01tU0000000HRQiIAO",
     section:'Maintenance Tools',
     linkid:11,
-    module:3
+    module:3,
+    sid:'SM'
   },
   {
     value: 'SM',
@@ -54,7 +57,8 @@ export const tftools = [
     link: true,
     section:'Configuration',
     linkid:301,
-    module:3
+    module:3,
+    sid:'SM'
   }
 ];
 

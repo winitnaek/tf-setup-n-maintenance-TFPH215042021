@@ -38,8 +38,7 @@ import { UI_COMP, UI_PAGE, UI_TEST, tftools } from "./base/constants/TFTools";
 import griddataAPI from "./app/api/griddataAPI";
 //Temporary set user in session:======Comment this when deployed with MAC======
 if (!sessionStorage.getItem("up")) {
-  var userProfile =
-    '{"userId":"vinit","firstName":"Vinit","lastName":"Naik","dataset":"VINIT","securitytokn":"fhfh484jer843je848rj393jf","branding":"base64ImageData","userTheme":"Default","roles":["ER"],"applications":[{"id":"73b9a516-c0ca-43c0-b0ae-190e08d77bcc","name":"TFTools","accessIds":[{"id":"162ebe14-8d87-44e1-a786-c9365c9d5cd8","visible":true}],"permissions":{"CF":[1,1,1,1,0],"CT":[1,1,1,1,0],"CP":[1,1,1,1,0],"AO":[1,1,1,1,0],"CO":[1,1,1,1,0],"OO":[1,1,1,1,0],"EG":[1,1,1,1,0],"UQ":[1,1,1,1,0],"GG":[1,1,1,1,0],"GC":[1,1,1,1,0],"UO":[1,1,1,1,0],"CG":[1,1,1,1,0],"TR":[1,1,1,1,0],"MR":[1,1,1,1,0],"MT":[1,1,1,1,0],"TEDO":[1,1,1,1,0],"PWI":[1,1,1,1,0], "BT":[1,1,1,1,0],"MS":[1,1,1,1,0],"LI":[1,1,1,1,0]}}],"themeList":[{"id":"Default","name":"Default"},{"id":"HighContrast","name":"High Contrast"},{"id":"WhiteOnBlack","name":"White On Black"},{"id":"BlackOnWhite","name":"Black On White"}]}';
+  var userProfile = '{"userId":"vinit","dataset":"VINIT","securitytokn":"6d976b4e3ef843119dc1b66017160837","branding":"base64ImageData","userTheme":"Default","roles":["ER"],"applications":[{"id":"73b9a516-c0ca-43c0-b0ae-190e08d77bcc","name":"TaxFactory","accessIds":[{"id":"162ebe14-8d87-44e1-a786-c9365c9d5cd8","visible":true}],"permissions":{"CB":[1,1,1,1,0],"CYB":[1,1,1,1,0],"DB":[1,1,1,1,0],"LB":[1,1,1,1,0],"RB":[1,1,1,1,0],"MF":[1,1,1,1,0],"MV":[1,1,1,1,0],"PN":[1,1,1,1,0]}}],"themeList":[{"id":"Default","name":"Default"},{"id":"HighContrast","name":"HighContrast"},{"id":"WhiteOnBlack","name":"WhiteOnBlack"},{"id":"BlackOnWhite","name":"BlackOnWhite"}]}';
   var userdata = JSON.parse(userProfile);
   if (isMock()) {
     let thPerm = [1, 1, 1, 1, 0];
@@ -356,44 +355,14 @@ function setAppUserIDAndDataset(dataset, userid) {
   APP_DATASET = dataset;
   APP_USERID = userid;
 }
-var CP_RIGHTS, CT_RIGHTS, CF_RIGHTS, CFC_RIGHTS, WS_RIGHTS, UQ_RIGHTS, ALL_RIGHTS;
-function setCPRights(perm) {
-  CP_RIGHTS = setPerms(perm);
+//************Right & Permissions******************/
+var CB_RIGHTS, ALL_RIGHTS, CYB_RIGHTS, DB_RIGHTS, LB_RIGHTS, RB_RIGHTS,MF_RIGHTS,MV_RIGHTS,PA_RIGHTS,
+PN_RIGHTS;
+function setCBRights(perm) {
+  CB_RIGHTS = setPerms(perm);
 }
-function hasCPRights() {
-  return CP_RIGHTS;
-}
-function setCTRights(perm) {
-  CT_RIGHTS = setPerms(perm);
-}
-function hasCTRights() {
-  return CT_RIGHTS;
-}
-function setCFRights(perm) {
-  CF_RIGHTS = setPerms(perm);
-}
-function hasCFRights() {
-  return CF_RIGHTS;
-}
-function setCFCRights(perm) {
-  CF_RIGHTS = setPerms(perm);
-}
-function hasCFCRights() {
-  return CF_RIGHTS;
-}
-function setWSRights(perm) {
-  WS_RIGHTS = setPerms(perm);
-}
-
-function hasWSRights() {
-  return WS_RIGHTS;
-}
-function setUQRights(perm) {
-  UQ_RIGHTS = setPerms(perm);
-}
-
-function hasUQRights() {
-  return UQ_RIGHTS;
+function hasCBRights() {
+  return CB_RIGHTS;
 }
 function setAlRights(perm) {
   ALL_RIGHTS = perm;
@@ -401,16 +370,62 @@ function setAlRights(perm) {
 function getAllRights() {
   return ALL_RIGHTS;
 }
+function setCYBRights(perm) {
+  CYB_RIGHTS = setPerms(perm);
+}
+function hasCYBRights() {
+  return CYB_RIGHTS;
+}
+function setDBRights(perm) {
+  DB_RIGHTS = setPerms(perm);
+}
+function hasDBRights() {
+  return DB_RIGHTS;
+}
+function setLBRights(perm) {
+  LB_RIGHTS = setPerms(perm);
+}
+function hasLBRights() {
+  return LB_RIGHTS;
+}
+function setRBRights(perm) {
+  RB_RIGHTS = setPerms(perm);
+}
+function hasRBRights() {
+  return RB_RIGHTS;
+}
+function setMFRights(perm) {
+  MF_RIGHTS = setPerms(perm);
+}
+function hasMFRights() {
+  return MF_RIGHTS;
+}
+function setMVRights(perm) {
+  MV_RIGHTS = setPerms(perm);
+}
+function hasMVRights() {
+  return MV_RIGHTS;
+}
+function setPNRights(perm) {
+  PN_RIGHTS = setPerms(perm);
+}
+function hasPNRights() {
+  return PN_RIGHTS;
+}
+//************Right & Permissions******************/
 function setModulePermissions(apps) {
   apps.forEach(function (app) {
     if (app.id == "73b9a516-c0ca-43c0-b0ae-190e08d77bcc") {
       app.accessIds.forEach(function (access) {
         if (access.id == "162ebe14-8d87-44e1-a786-c9365c9d5cd8" && access.visible == true) {
-          // setCPRights(app.permissions.CP);
-          // setCTRights(app.permissions.CT);
-          // setCFRights(app.permissions.CF)
-          // setUQRights(app.permissions.UQ);
-          setWSRights(app.permissions);
+          setCBRights(app.permissions.CB);
+          setDBRights(app.permissions.DB);
+          setLBRights(app.permissions.LB);
+          setRBRights(app.permissions.RB);
+          setMFRights(app.permissions.MF);
+          setMVRights(app.permissions.MV);
+          setPNRights(app.permissions.PN);
+          setCYBRights(app.permissions.CYB);
           setAlRights(app.permissions);
         }
       });
@@ -532,22 +547,34 @@ window.appUserId = appUserId;
 
 module.exports = appAnchor;
 window.appAnchor = appAnchor;
-
-module.exports = hasCPRights;
-window.hasCPRights = hasCPRights;
-
-module.exports = hasCTRights;
-window.hasCTRights = hasCTRights;
-
-module.exports = hasCFRights;
-window.hasCFRights = hasCFRights;
-
-module.exports = hasUQRights;
-window.hasUQRights = hasUQRights;
+//************Right & Permissions******************/
+module.exports = hasCBRights;
+window.hasCBRights = hasCBRights;
 
 module.exports = getAllRights;
 window.getAllRights = getAllRights;
 
+module.exports = hasCYBRights;
+window.hasCYBRights = hasCYBRights;
+
+module.exports = hasDBRights;
+window.hasDBRights = hasDBRights;
+
+module.exports = hasLBRights;
+window.hasLBRights = hasLBRights;
+
+module.exports = hasRBRights;
+window.hasRBRights = hasRBRights;
+
+module.exports = hasMFRights;
+window.hasMFRights = hasMFRights;
+
+module.exports = hasMVRights;
+window.hasMVRights = hasMVRights;
+
+module.exports = hasPNRights;
+window.hasPNRights = hasPNRights;
+//************Right & Permissions******************/
 module.exports = onloadPdfData;
 window.onloadPdfData = onloadPdfData;
 
