@@ -38,7 +38,7 @@ import { UI_COMP, UI_PAGE, UI_TEST, tftools } from "./base/constants/TFTools";
 import griddataAPI from "./app/api/griddataAPI";
 //Temporary set user in session:======Comment this when deployed with MAC======
 if (!sessionStorage.getItem("up")) {
-  var userProfile = '{"userId":"vinit","dataset":"VINIT","securitytokn":"6d976b4e3ef843119dc1b66017160837","branding":"base64ImageData","userTheme":"Default","roles":["ER"],"applications":[{"id":"73b9a516-c0ca-43c0-b0ae-190e08d77bcc","name":"TaxFactory","accessIds":[{"id":"162ebe14-8d87-44e1-a786-c9365c9d5cd8","visible":true}],"permissions":{"CB":[1,1,1,1,0],"CYB":[1,1,1,1,0],"DB":[1,1,1,1,0],"LB":[1,1,1,1,0],"RB":[1,1,1,1,0],"MF":[1,1,1,1,0],"MV":[1,1,1,1,0],"PN":[1,1,1,1,0]}}],"themeList":[{"id":"Default","name":"Default"},{"id":"HighContrast","name":"HighContrast"},{"id":"WhiteOnBlack","name":"WhiteOnBlack"},{"id":"BlackOnWhite","name":"BlackOnWhite"}]}';
+  var userProfile = '{"userId":"vinit","dataset":"VINIT","securitytokn":"6d976b4e3ef843119dc1b66017160837","branding":"base64ImageData","userTheme":"Default","roles":["ER"],"applications":[{"id":"73b9a516-c0ca-43c0-b0ae-190e08d77bcc","name":"TaxFactory","accessIds":[{"id":"162ebe14-8d87-44e1-a786-c9365c9d5cd8","visible":true}],"permissions":{"CB":[1,1,1,1,0],"CYB":[1,1,1,1,0],"DB":[1,1,1,1,0],"LB":[1,1,1,1,0],"RB":[1,1,1,1,0],"MF":[1,1,1,1,0],"MV":[1,1,1,1,0],"PN":[1,1,1,1,0],"SM":[1,1,1,1,0]}}],"themeList":[{"id":"Default","name":"Default"},{"id":"HighContrast","name":"HighContrast"},{"id":"WhiteOnBlack","name":"WhiteOnBlack"},{"id":"BlackOnWhite","name":"BlackOnWhite"}]}';
   var userdata = JSON.parse(userProfile);
   if (isMock()) {
     let thPerm = [1, 1, 1, 1, 0];
@@ -356,8 +356,8 @@ function setAppUserIDAndDataset(dataset, userid) {
   APP_USERID = userid;
 }
 //************Right & Permissions******************/
-var CB_RIGHTS, ALL_RIGHTS, CYB_RIGHTS, DB_RIGHTS, LB_RIGHTS, RB_RIGHTS,MF_RIGHTS,MV_RIGHTS,PA_RIGHTS,
-PN_RIGHTS;
+var CB_RIGHTS, ALL_RIGHTS, CYB_RIGHTS, DB_RIGHTS, LB_RIGHTS, RB_RIGHTS,MF_RIGHTS,MV_RIGHTS,
+PN_RIGHTS,SM_RIGHTS;
 function setCBRights(perm) {
   CB_RIGHTS = setPerms(perm);
 }
@@ -412,6 +412,12 @@ function setPNRights(perm) {
 function hasPNRights() {
   return PN_RIGHTS;
 }
+function setSMRights(perm) {
+  SM_RIGHTS = setPerms(perm);
+}
+function hasSMRights() {
+  return SM_RIGHTS;
+}
 //************Right & Permissions******************/
 function setModulePermissions(apps) {
   apps.forEach(function (app) {
@@ -425,6 +431,7 @@ function setModulePermissions(apps) {
           setMFRights(app.permissions.MF);
           setMVRights(app.permissions.MV);
           setPNRights(app.permissions.PN);
+          setSMRights(app.permissions.SM);
           setCYBRights(app.permissions.CYB);
           setAlRights(app.permissions);
         }
@@ -574,6 +581,9 @@ window.hasMVRights = hasMVRights;
 
 module.exports = hasPNRights;
 window.hasPNRights = hasPNRights;
+
+module.exports = hasSMRights;
+window.hasSMRights= hasSMRights;
 //************Right & Permissions******************/
 module.exports = onloadPdfData;
 window.onloadPdfData = onloadPdfData;
