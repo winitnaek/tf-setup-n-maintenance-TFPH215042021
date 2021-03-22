@@ -6,6 +6,10 @@ export default {
     areas: []
   },
   favoriteAreas: [],
+  environment : {
+    tfSaas: false,
+    isEU: true
+  },
 
   formData: { data: {}, isOpen: false, mode: "New", index: null },
 

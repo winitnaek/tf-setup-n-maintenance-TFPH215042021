@@ -114,6 +114,12 @@ class TFHome extends Component {
     }
     let arr = tftools.filter(tool => !excluededPages.includes(tool.value)).sort(this.GetSortOrder("label"));
     console.log(arr);
+
+    const env = this.props.environment;
+
+    if(env.tfSaas) {
+      arr = arr.filter(screen => !screen.hideSaaS)
+    }
     return arr ;//tftools.filter(tool => !excluededPages.includes(tool.value)).sort(this.GetSortOrder("label"));
   }
 
@@ -173,7 +179,7 @@ class TFHome extends Component {
               <div id="pageContainer" className="container w-100 pl-5 pr-5" style={{ maxWidth: "100%" }}>
                 <FlyoutMenu
                   favorites={this.props.favorites}
-                  options={tftools}
+                  options={this.getOptions()}
                   showSideMenu={false}
                   setFavorite={this.setFavorite}
                   renderApplication={this.renderApplication}
@@ -190,7 +196,8 @@ class TFHome extends Component {
 function mapStateToProps(state) {
   return {
     formData: state.formData,
-    favorites: state.favoriteLinks//.filter(opt => opt.id !== "testHarness")
+    favorites: state.favoriteLinks,//.filter(opt => opt.id !== "testHarness")
+    environment: state.environmentReducer,
   };
 }
 function mapDispatchToProps(dispatch) {

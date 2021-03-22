@@ -14,10 +14,12 @@ import getPdfDataAPI from "../api/getPdfDataAPI";
 import formDataAPI from "../api/formDataAPI";
 import * as gridStyles from "../../base/constants/AppConstants";
 import ButtonBar from "./ButtonBar";
-import { compMetaData,populateParentData} from "../../base/utils/tfUtils";
-import {setParentInfo} from '../../app/actions/parentInfoActions';
+import { compMetaData, populateParentData, formatFieldData } from "../../base/utils/tfUtils";
+import { setParentInfo } from "../../app/actions/parentInfoActions";
 import { Modal, ModalHeader, ModalBody, Row, Col, Alert, UncontrolledTooltip } from "reactstrap";
 import generateReportApi from "../api/generateReportAPI";
+import CustomFormSaas from "./CustomFormSaas";
+import * as fieldDataAll from "../metadata/fieldData";
 class CustomGrid extends Component {
   constructor(props) {
     super(props);
@@ -32,17 +34,26 @@ class CustomGrid extends Component {
       viewPdfMode: false,
       showAdditonalInfo: null,
       status: "success",
-      showActionAlert:false,
-      aheader:'',
-      abody:'',
-      abtnlbl:'',
+      showActionAlert: false,
+      aheader: "",
+      abody: "",
+      abtnlbl: "",
       isSelectAll: undefined,
       saveSelected: false,
-      value: '',
+      value: "",
+      showCustomForm: false,
+      loading: false,
+      errorMessage: null,
+      spinner: false,
     };
 
     this.renderGrid = pgData => {
       renderTFSetupNMaintenance("pageContainer", pgData);
+    };
+
+    this.reRun = pgid => {
+      const data = tftools.find(tool => tool.id === pgid);
+      this.renderGrid(data);
     };
 
     this.formAction = data => {
@@ -63,31 +74,34 @@ class CustomGrid extends Component {
 
     this.handlePDF = async (event, fromBar) => {
       event.preventDefault();
-        const { pageid, formData } = this.props;
-        let data = undefined;
-        if(pageid === "permissions") {
-          data = [];
-          let _id = document.querySelector("div[role='grid']").id;
-          const griddata = $("#" + _id).jqxGrid("getdatainformation");
-          for (let i = 0; i < griddata.rowscount; i++) {
-            const rowData = $("#" + _id).jqxGrid("getrenderedrowdata", i);
-            data.push(rowData);
-          }  
+      const { pageid, formData } = this.props;
+      let data = undefined;
+      if (pageid === "permissions") {
+        data = [];
+        let _id = document.querySelector("div[role='grid']").id;
+        const griddata = $("#" + _id).jqxGrid("getdatainformation");
+        for (let i = 0; i < griddata.rowscount; i++) {
+          const rowData = $("#" + _id).jqxGrid("getrenderedrowdata", i);
+          data.push(rowData);
         }
-        const pdfData = await getPdfDataAPI.getPdfData(pageid, data, undefined, fromBar);
-        this.setState({
-          viewPdfMode: !this.state.viewPdfMode,
-          pdfData,
-        });
-    }
-    
+      }
+      const pdfData = await getPdfDataAPI.getPdfData(pageid, data, undefined, fromBar);
+      this.setState({
+        viewPdfMode: !this.state.viewPdfMode,
+        pdfData
+      });
+    };
 
-    this.getMarginTop = () =>  {
+    this.getMarginTop = () => {
       const childMetaData = this.state.clickedPageId && compMetaData(this.state.clickedPageId);
-      
-      if(this.state.isOpen) {
+
+      if (this.state.isOpen) {
         if (childMetaData.pgdef.pgsubtitle === "") {
           return "30px";
+        } else if (this.props.pageid === "custombackupRestore" && this.props.isSaas) {
+          return "40px";
+        } else if (this.props.pageid === "custombackupRestore") {
+          return "63px";
         } else {
           return "86px";
         }
@@ -100,11 +114,13 @@ class CustomGrid extends Component {
       }
     };
 
-    this.getMarginLeft = () =>  {
+    this.getMarginLeft = () => {
       const childMetaData = this.state.clickedPageId && compMetaData(this.state.clickedPageId);
-      
-      if(this.state.isOpen) {
+
+      if (this.state.isOpen && this.props.pageid !== "custombackupRestore") {
         return "190px";
+      } else if (this.state.isOpen && this.props.pageid === "custombackupRestore") {
+        return "5%";
       } else {
         return "260px";
       }
@@ -126,11 +142,13 @@ class CustomGrid extends Component {
     this.handleDeleteAll = this.handleDeleteAll.bind(this);
     this.handleConfirmDeleteOk = this.handleConfirmDeleteOk.bind(this);
     this.handleConfirmDeleteCancel = this.handleConfirmDeleteCancel.bind(this);
-    this.hideUIAlert=this.hideUIAlert.bind(this);
+    this.hideUIAlert = this.hideUIAlert.bind(this);
     this.handleHidePDF = this.handleHidePDF.bind(this);
     this.handleShowPDF = this.handleShowPDF.bind(this);
     this.clickFromOutside = this.clickFromOutside.bind(this);
     this.saveFromOutside = this.saveFromOutside.bind(this);
+    this.setFormValue = this.setFormValue.bind(this);
+    this.downloadFile = this.downloadFile.bind(this);
   }
 
   componentDidMount() {
@@ -143,145 +161,204 @@ class CustomGrid extends Component {
   }
 
   handleHidePDF() {
-    this.setState({ showPDF: false })
+    this.setState({ showPDF: false });
   }
 
   handleShowPDF(rowdata, title) {
-    this.renderPDFData(rowdata,title);
+    this.renderPDFData(rowdata, title);
   }
 
-  renderPDFData(pdfData,title){
+  renderPDFData(pdfData, title) {
     this.setState({
       showPDF: true,
-      title:title,
-      pdfData :pdfData
+      title: title,
+      pdfData: pdfData
     });
   }
 
   renderErrorPDF(yrEndTaxDoc) {
-    var printFrame = document.getElementById('pdfi-frametf');
+    var printFrame = document.getElementById("pdfi-frametf");
     let errorContent = `<html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head><body><div class="alert alert-danger" style="margin:3px;" role="alert"><strong>Error: </strong>Unable to Get Year End Tax Document. Please contact your system administrator.</div></body></html>`;
     if (printFrame) {
-        printFrame.height='100'
-        printFrame.src = "data:text/html;charset=utf-8,"+errorContent
+      printFrame.height = "100";
+      printFrame.src = "data:text/html;charset=utf-8," + errorContent;
     }
-}
+  }
 
-handleDeleteAll(clickPageId) {
-  if(clickPageId==='auditLogViewer'){
-    this.showConfirm(true,'Warning!','Are you sure you want to delete all?');
+  handleDeleteAll(clickPageId) {
+    if (clickPageId === "auditLogViewer") {
+      this.showConfirm(true, "Warning!", "Are you sure you want to delete all?");
+    }
   }
-}
-showConfirm(cshow, cheader, cbody){
-  this.setState({
-      showConfirm: cshow,
-      cheader:cheader,
-      cbody:cbody
-  });
-}
-handleConfirmDeleteOk(){
-  this.setState({
-    showConfirm: false
-  });
-  if(this.props.pageid==='auditLogViewer'){
-    deletegriddataAPI.deleteAllGridData(this.props.pageid).then().then((response) => response).then((repos) => {
-      alert(repos.message)
-      const data = tftools.find(tool => tool.id === this.props.pageid);
-      if (data) {
-        renderTFConfigNTaxes("pageContainer", data);
-      }
-    });
-  }
-}
-handleConfirmDeleteCancel(){
+  showConfirm(cshow, cheader, cbody) {
     this.setState({
-        showConfirm: !this.state.showConfirm
+      showConfirm: cshow,
+      cheader: cheader,
+      cbody: cbody
     });
-}
-  
-  renderAlert(isAlert) {
-    return (
-      this.state.showAdditonalInfo && isAlert
-                      ? this.state.showAdditonalInfo.map(info => {
-                          return (
-                            <Alert
-                              color={info.status}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                width: "50%",
-                                marginLeft: this.getMarginLeft(),
-                                marginTop: this.getMarginTop(),
-                                position: "absolute"
-                              }}
-                            >
-                              Test Result for:
-                              <div
-                                style={{
-                                  width: "100px",
-                                  display: "flex",
-                                  color: " rgb(76, 115, 146)",
-                                  justifyContent: "space-around"
-                                }}
-                              >
-                                <span id="downloadResult" onClick={() => {}}>
-                                  <i class="fa fa-download" aria-hidden="true" />
-                                  <UncontrolledTooltip placement="top" target="downloadResult">
-                                    <span> Download Result </span>
-                                  </UncontrolledTooltip>
-                                </span>
-                                <span id="viewPdf" onClick={() => {}}>
-                                  <i className="fa fa-file-pdf fa-lg" />
-                                  <UncontrolledTooltip placement="bottom" target="viewPdf">
-                                    <span> View Result as PDF</span>
-                                  </UncontrolledTooltip>
-                                </span>
-                              </div>
-                            </Alert>
-                          );
-                        }) : null
-    )
+  }
+  handleConfirmDeleteOk() {
+    this.setState({
+      showConfirm: false
+    });
+    if (this.props.pageid === "auditLogViewer") {
+      deletegriddataAPI
+        .deleteAllGridData(this.props.pageid)
+        .then()
+        .then(response => response)
+        .then(repos => {
+          alert(repos.message);
+          const data = tftools.find(tool => tool.id === this.props.pageid);
+          if (data) {
+            renderTFConfigNTaxes("pageContainer", data);
+          }
+        });
+    }
+  }
+  handleConfirmDeleteCancel() {
+    this.setState({
+      showConfirm: !this.state.showConfirm
+    });
   }
 
-  handleRunLocator(clickPageId, gridDef, value) {
-    if(value) sessionStorage.setItem('newDataName', value);
+  downloadFile(file) {
+    const byteCharacters = atob(file.fileData);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const output = new Blob([byteArray]);
+    var anchor = document.createElement("a");
+    var url = window.URL || window.webkitURL;
+    anchor.href = url.createObjectURL(output);
+    var downloadFileName = file.fileName;
+    anchor.download = downloadFileName;
+    document.body.append(anchor);
+    anchor.click();
+
+    setTimeout(function () {
+      document.body.removeChild(anchor);
+      url.revokeObjectURL(anchor.href);
+    }, 100);
+  }
+
+  renderAlert(isAlert) {
+    const gridStyle =
+      !this.props.isSaas || this.props.pageid === "custombackupRestore"
+        ? {
+            width: "85%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginLeft: this.getMarginLeft(),
+            marginTop: this.getMarginTop(),
+            position: "absolute",
+            zIndex: 2
+          }
+        : {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "50%",
+            margin: "0px auto 10px auto"
+          };
+    const gridStyleAlert = {
+      width: "90%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: ".225rem .875rem",
+      margin: "0 auto",
+      marginTop: "90px",
+      position: "absolute",
+      left: "0",
+      right: "0",
+      zIndex: 2
+    };
+    return this.state.showAdditonalInfo && isAlert ? (
+      <Alert color={(this.state.showAdditonalInfo.status || "success").toLowerCase()} style={this.props.pageid === "custombackupRestore" && !this.props.isSaas ? gridStyleAlert :gridStyle}>
+        {this.state.errorMessage ? this.state.errorMessage : "Test Result for:"}
+        <div style={{ display: "flex" }}>
+          {(this.state.showAdditonalInfo.fileOutputs || []).map(info => {
+            return (
+              <div
+                style={{
+                  width: "40px",
+                  color: " rgb(76, 115, 146)"
+                }}
+              >
+                {!info.fileName.includes("out") && info.fileData && (
+                  <span id="downloadResult" onClick={() => this.downloadFile(info)}>
+                    <i class="fa fa-download" aria-hidden="true" />
+                    <UncontrolledTooltip placement="top" target="downloadResult">
+                      <span> Download Result for {info.fileName} </span>
+                    </UncontrolledTooltip>
+                  </span>
+                )}
+                {info.fileName.includes("out") && info.fileData && (
+                  <span
+                    id="viewPdf"
+                    onClick={() => this.setState({ pdfData: { docData: info.fileData }, viewPdfMode: true })}
+                  >
+                    <i className="fa fa-file-pdf fa-lg" />
+                    <UncontrolledTooltip placement="bottom" target="viewPdf">
+                      <span> View Result as PDF for {info.fileName}</span>
+                    </UncontrolledTooltip>
+                  </span>
+                )}
+              </div>
+            );
+          })}
+          <span id="close" onClick={() => this.setState({ showAdditonalInfo: null })}>
+            <i className="fas fa-times" />
+          </span>
+        </div>
+      </Alert>
+    ) : null;
+  }
+
+  handleRunLocator(clickPageId, gridDef, value, fromBar) {
+    if (value) sessionStorage.setItem("newDataName", value);
     this.setState(
       {
         clickedPageId: clickPageId,
-        value,
+        value
       },
       () => {
         const isAlert = gridDef.hasAlert;
-        if(isAlert) {
-          this.renderAdditionalInfo(clickPageId);
+        if (isAlert) {
+          this.renderAdditionalInfo(clickPageId, undefined, undefined, fromBar);
         } else {
-          this.getGridPopupData();
+          if (clickPageId === "customdataBackup" && this.props.isSaas) {
+            this.setState({ showCustomForm: true, isOpen: true });
+          } else {
+            this.getGridPopupData();
+          }
         }
-       
       }
     );
   }
 
-  hideUIAlert(){
+  hideUIAlert() {
     this.setState({
-      showActionAlert:false
+      showActionAlert: false
     });
-    if(this.props.pageid==='dataSets'){
-      const data = tftools.find(tool => tool.id === 'dataSets');
+    if (this.props.pageid === "dataSets") {
+      const data = tftools.find(tool => tool.id === "dataSets");
       if (data) {
         renderTFSetupNMaintenance("pageContainer", data);
       }
     }
   }
-  showActionMessage(type, action,message) {
+  showActionMessage(type, action, message) {
     this.setState({
       showActionAlert: true,
-      aheader:action,
-      abody:message
+      aheader: action,
+      abody: message
     });
   }
-  
+
   clickCheckBox(event) {
     this.setState({
       showSummary: event.target.value === "on"
@@ -296,40 +373,95 @@ handleConfirmDeleteCancel(){
     this.setState({ saveSelected: true });
   }
 
-  parentInfoAction(formData){
+  parentInfoAction(formData) {
     this.props.setParentInfo(formData);
-  };
+  }
   toggle() {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
+      showAdditonalInfo: null,
+      exitDataset: null
     });
   }
 
   async getGridPopupData() {
-    const data = await this.props.getDataForChildGrid({
-      pgid: this.state.clickedPageId,
-      showSummary: this.state.showSummary,
-      dataSetName: this.state.value,
-    }).then(response => {
-    if(!this.state.value) {
-      const { griddef } = this.props.metadata;
-      this.setState({
-        modalGridData: data.length === 1 && griddef.responseKey ? data[0][responseKey] : data,
-        isOpen: true
+    const resData = await this.props
+      .getDataForChildGrid({
+        pgid: this.state.clickedPageId,
+        showSummary: this.state.showSummary,
+        dataSetName: this.state.value
+      })
+      .then(response => {
+        if (!this.state.value) {
+          const { griddef } = this.props.metadata;
+          this.setState({
+            modalGridData: response.length === 1 && griddef.responseKey ? response[0][responseKey] : response,
+            isOpen: true
+          });
+        } else {
+          const data = tftools.find(tool => tool.id === this.state.clickedPageId);
+          this.renderGrid(data);
+        }
       });
-    } else {
-      const data = tftools.find(tool => tool.id === this.state.clickedPageId);
-      this.renderGrid(data);
-    }
-  });
   }
 
-  async renderAdditionalInfo(pgid, values) {
-    const data = await generateReportApi.generate(pgid, values).then(response => {
+  async renderAdditionalInfo(pgid, values, info = {}, fromBar) {
+    let extraInfo = {};
+    if (pgid === "customdataBackup" && !this.state.showCustomForm) {
+      extraInfo.cfFormat = this.state.showSummary;
+      extraInfo.backupAll = info.allSelected;
+    }
+
+    if (pgid === "customdataBackup" && this.state.showCustomForm) {
+      if (this.state.exitDataset) {
+        extraInfo.cfFormat = false;
+        extraInfo.backupAll = false;
+        values = [
+          {
+            select: true,
+            data: this.state.exitDataset
+          }
+        ];
+      } else {
+        this.setState({
+          showAdditonalInfo: {
+            status: "warning"
+          },
+          errorMessage: "Please select a data set"
+        });
+        return;
+      }
+    }
+    let payload = [];
+    if (document.querySelector("div[role='grid']")) {
+      let _id = document.querySelector("div[role='grid']").id;
+      if(document.querySelectorAll("div[role='grid']")[1]) {
+        _id = document.querySelectorAll("div[role='grid']")[1].id;
+      }
+      const griddata = $("#" + _id).jqxGrid("getdatainformation");
+      for (let i = 0; i < griddata.rowscount; i++) {
+        const rowData = $("#" + _id).jqxGrid("getrenderedrowdata", i);
+        const checkBoxKey = Object.keys(rowData).filter(k => rowData[k] === true);
+        if (rowData[checkBoxKey]) {
+          payload.push(rowData);
+        }
+      }
+      values = payload;
+    }
+    if (pgid === "optionalBackup") {
+      values = payload;
+    }
+    this.setState({ loading: true, errorMessage: null, showAdditonalInfo: null });
+    const data = await generateReportApi.generate(pgid, values, extraInfo, fromBar).then(response => {
       this.setState({
-        showAdditonalInfo: response
+        showAdditonalInfo: response,
+        loading: false
       });
     });
+  }
+
+  setFormValue(id, value) {
+    this.setState({ [id]: value });
   }
 
   render() {
@@ -351,13 +483,20 @@ handleConfirmDeleteCancel(){
 
     const { pgdef, griddef } = metadata;
     const { metaInfo } = pgdef;
-
-    const { formAction, filterFormAction , parentInfoAction } = this;
+    let fieldDataX = fieldData;
+    if (!fieldDataX) {
+      fieldDataX = formatFieldData(fieldDataAll[pageid], pageid, "vinit");
+    }
+    const { formAction, filterFormAction, parentInfoAction } = this;
     const childMetaData = this.state.clickedPageId && compMetaData(this.state.clickedPageId);
     return (
       <Fragment>
-         {this.renderAlert(griddef.hasAlert)}
-         <ViewPDF view={this.state.viewPdfMode} handleHidePDF={() => this.setState({viewPdfMode: false })} pdfData={this.state.pdfData} />
+        {this.renderAlert(griddef.hasAlert)}
+        <ViewPDF
+          view={this.state.viewPdfMode}
+          handleHidePDF={() => this.setState({ viewPdfMode: false })}
+          pdfData={this.state.pdfData}
+        />
         <ReusableGrid
           pageid={pageid}
           metadata={metadata}
@@ -400,70 +539,96 @@ handleConfirmDeleteCancel(){
             pid={pid}
             permissions={permissions}
             tftools={tftools}
-            handleRunLocator={(clickedPageId) => this.handleRunLocator(clickedPageId, griddef)}
+            handleRunLocator={clickedPageId => this.handleRunLocator(clickedPageId, griddef, undefined, true)}
             handleDeleteAll={this.handleDeleteAll}
             handleCheckAll={this.clickFromOutside}
-            handlePdf={(event) => this.handlePDF(event, true)}
+            handlePdf={event => this.handlePDF(event, true)}
             handleSaveAll={this.saveFromOutside}
+            reRun={this.reRun}
           />
         ) : null}
-        <ConfirmModal 
-          showConfirm={this.state.showConfirm} 
-          okbtnlbl='OK' 
-          cancelbtnlbl='Cancel' 
-          cheader={this.state.cheader} 
-          cbody={this.state.cbody} 
-          handleOk={this.handleConfirmDeleteOk} 
-          handleCancel={this.handleConfirmDeleteCancel} 
-          {...metaInfo} 
+        <ConfirmModal
+          showConfirm={this.state.showConfirm}
+          okbtnlbl="OK"
+          cancelbtnlbl="Cancel"
+          cheader={this.state.cheader}
+          cbody={this.state.cbody}
+          handleOk={this.handleConfirmDeleteOk}
+          handleCancel={this.handleConfirmDeleteCancel}
+          {...metaInfo}
         />
-        <ReusableAlert handleClick={this.hideUIAlert}  showAlert={this.state.showActionAlert} aheader={this.state.aheader} abody={this.state.abody} abtnlbl={'Ok'}/>;
+        <ReusableAlert
+          handleClick={this.hideUIAlert}
+          showAlert={this.state.showActionAlert}
+          aheader={this.state.aheader}
+          abody={this.state.abody}
+          abtnlbl={"Ok"}
+        />
+        ;
         <Modal isOpen={this.state.isOpen} size="lg" style={gridStyles.modal}>
           <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>
             <Row>
+            {this.state.spinner && <i class="fas fa-spinner fa-spin fa-2x" style={{  color: 'green', width: 'max-content', margin: '0 auto', display: 'flex', }}></i> }
+              <Col>{this.renderAlert(childMetaData && childMetaData.griddef.hasAlert)}</Col>
+            </Row>
+            <Row>
               <Col className="grid-modal mr-2 ml-2">
                 {this.state.isOpen ? (
                   <Fragment>
-                    {this.renderAlert(childMetaData && childMetaData.griddef.hasAlert)}
-                    <ReusableGrid
-                      parentPageid={pageid}
-                      pageid={this.state.clickedPageId}
-                      metadata={childMetaData}
-                      permissions={permissions}
-                      griddata={this.state.modalGridData}
-                      gridProps={gridProps}
-                      tftools={tftools}
-                      saveGridData={savegriddataAPI}
-                      setFilterFormData={filterFormAction}
-                      setFormData={formAction}
-                      deleteGridData={deletegriddataAPI}
-                      recentUsage={getUsageData}
-                      renderGrid={this.renderGrid}
-                      formMetaData={formMetaData}
-                      formData={formData}
-                      formFilterData={formFilterData}
-                      fieldData={fieldData}
-                      getFormData={formDataAPI}
-                      clickCheckBox={this.clickCheckBox}
-                      styles={gridStyles}
-                      mapToolUsage={mappingToolUsageAPI}
-                      className={className}
-                      hideModal={this.toggle}
-                      getPdfDataAPI={getPdfDataAPI}
-                      setParentInfo={this.parentInfoAction}
-                      fillParentInfo={this.populateParentData}
-                      renderAdditionalInfo={this.renderAdditionalInfo}
-                      showActionMessage={this.showActionMessage}
-                    />
-                    {childMetaData && childMetaData.griddef.hasButtonBar && childMetaData.griddef.hasButtonBar == true ? (
+                    {this.state.showCustomForm ? (
+                      <CustomFormSaas
+                        title={pgdef.pgtitle}
+                        fieldData={fieldDataX}
+                        updateFormValue={this.setFormValue}
+                        loading={this.state.loading}
+                      />
+                    ) : (
+                      <ReusableGrid
+                        parentPageid={pageid}
+                        pageid={this.state.clickedPageId}
+                        metadata={childMetaData}
+                        permissions={permissions}
+                        griddata={this.state.modalGridData}
+                        gridProps={gridProps}
+                        tftools={tftools}
+                        saveGridData={savegriddataAPI}
+                        setFilterFormData={filterFormAction}
+                        setFormData={formAction}
+                        deleteGridData={deletegriddataAPI}
+                        recentUsage={getUsageData}
+                        renderGrid={this.renderGrid}
+                        formMetaData={formMetaData}
+                        formData={formData}
+                        formFilterData={formFilterData}
+                        fieldData={fieldData}
+                        getFormData={formDataAPI}
+                        clickCheckBox={this.clickCheckBox}
+                        styles={gridStyles}
+                        mapToolUsage={mappingToolUsageAPI}
+                        className={className}
+                        hideModal={this.toggle}
+                        getPdfDataAPI={getPdfDataAPI}
+                        setParentInfo={this.parentInfoAction}
+                        fillParentInfo={this.populateParentData}
+                        renderAdditionalInfo={this.renderAdditionalInfo}
+                        showActionMessage={this.showActionMessage}
+                      />
+                    )}
+                    {(childMetaData &&
+                      childMetaData.griddef.hasButtonBar &&
+                      childMetaData.griddef.hasButtonBar == true) ||
+                    this.state.showCustomForm ? (
                       <ButtonBar
                         pageid={pageid}
                         metadata={metadata}
                         pid={pid}
                         permissions={permissions}
                         tftools={tftools}
-                        handleRunLocator={(clickedPageId) => this.handleRunLocator(clickedPageId, childMetaData && childMetaData.griddef)}
+                        customForm={this.state.showCustomForm}
+                        handleRunLocator={clickedPageId =>
+                          this.handleRunLocator(clickedPageId, childMetaData && childMetaData.griddef)
+                        }
                       />
                     ) : null}
                   </Fragment>
@@ -481,7 +646,8 @@ function mapStateToProps(state) {
   return {
     formData: state.formData,
     formFilterData: state.formFilterData,
-    parentInfo:state.parentInfo
+    parentInfo: state.parentInfo,
+    isSaas: state.environmentReducer.tfSaas
   };
 }
 

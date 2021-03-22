@@ -10,6 +10,7 @@ import {
   deletealldatamap,
   viewPDFMapButtonBar,
   saveAsdatamap,
+  generateMapButtonBar,
 } from "../constants/TFTools";
 import mockDataMapper from "../../app/metadata/_mockDataMap";
 import mockAutoCompleteMap from "../../app/metadata/_mockAutoCompleteMap";
@@ -24,7 +25,10 @@ import * as CellsRenderer from "../../app/metadata/cellsrenderer";
 import store from "../../tf_setup_n_maintenance";
 import {dataSetsGridInput, buildDataSetsSaveInput, buildDataSetsDeleteInput} from '../utils/datasetsUtil'
 import {buildLoginsSaveInput,buildLoginsDeleteInput, buildPermissionsSaveInput,permissionsGridInput, permissionPDfInput} from './laPermissionsUtil';
-import {auditLogViewerGridInput,buildAuditLogViewerDeleteAll} from './aLogViewerUtil'
+import {auditLogViewerGridInput,buildAuditLogViewerDeleteAll} from './aLogViewerUtil';
+import { generateCustomBackupAPI, generateUploadCustomRestoreAPI, processCustomRestoreAPI } from './cBackupRestoreUtil';
+import { generateOptionalBackupAPI, generateUploadOptionalRestoreAPI } from './ourOverrideBackupUtil';
+import { generateDatabaseUploadAPI, generateProcessDatabaseUploadAPI } from './dbLoadUtil';
 /**
  * buildModuleAreaLinks
  * @param {*} apps
@@ -330,12 +334,32 @@ export function buildGridDataInput(pageid, store) {
   }
   return input;
 }
-export function buildFileUploadInput(pageid, store, data) {
+export function buildFileUploadInput(pageid, store, data, extraInfo, fromBar) {
+  if(pageid === "customdataBackup") {
+    return generateCustomBackupAPI(pageid, store, data, extraInfo);
+  } else if(pageid === "customdataRestore" && !fromBar) {
+    return generateUploadCustomRestoreAPI(pageid, store, data, extraInfo);
+  } else if(pageid === "customdataRestore" && fromBar) {
+    return processCustomRestoreAPI(pageid, store, data, extraInfo);
+  } else if(pageid === "optionalBackup" && fromBar) {
+    return generateOptionalBackupAPI(pageid, store, data, extraInfo);
+  }else if(pageid === "optionalRestore") {
+    return generateUploadOptionalRestoreAPI(pageid, store, data, extraInfo);
+  } else if(pageid === "databaseLoad" && !fromBar) {
+    return generateDatabaseUploadAPI(pageid, store, data, extraInfo);
+  } else if(pageid === "databaseLoad" && fromBar) {
+    return generateProcessDatabaseUploadAPI(pageid, store, data, extraInfo);
+  } else if(pageid === "customrestoreStatus" && fromBar) {
+    return {
+      userID: appUserId(),
+      dataset: appDataset(),
+    }
+  }
   let input = {      
-    "dataset": appDataset(),
-    "userID": appUserId(),
+    dataset: appDataset(),
+    userID: appUserId(),
 }
-  return input;
+return input;
 }
 export function getTaxCode(filterData) {
   if (filterData && filterData.taxCode) {
@@ -493,9 +517,9 @@ export function buildAutoCompSelInput(pageid, store, patten, formValues = {}) {
     return input;
   }
 
-  if(pageid === "permissionFor") {
+  if(pageid === "permissionFor" || pageid === "exitDataset") {
     return {
-      "login": state.parentInfo.loginName
+      "login": state.parentInfo.loginName || "AR"
     }
   }
 
@@ -894,6 +918,25 @@ export function viewPDFUrl(id) {
 
 export function viewPDFUrlButtonBar(id) {
   let viewPdf = viewPDFMapButtonBar.find(metadatam => {
+    if (id == metadatam.id) return metadatam;
+  });
+  let url = generateUrl.buildURL(viewPdf.url);
+  if (isMock()) {
+    if (mockDataMapper[id]) {
+      url = mockDataMapper[id];
+    } else {
+      let viewPdf = mockdelmap.find(metadatam => {
+        if (id == metadatam.id) return metadatam;
+      });
+      url = viewPdf.url;
+    }
+  }
+  console.log("VIEW PDF URL %s for page %s", url, id);
+  return url;
+}
+
+export function generateUrlButtonBar(id) {
+  let viewPdf = generateMapButtonBar.find(metadatam => {
     if (id == metadatam.id) return metadatam;
   });
   let url = generateUrl.buildURL(viewPdf.url);

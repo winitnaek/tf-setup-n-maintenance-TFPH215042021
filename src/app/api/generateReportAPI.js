@@ -1,17 +1,22 @@
 import {appError, getAdminErrorMessage}  from "bsiuilib";
-import {generateReportUrl, reqInfo,buildMaritalStatusInput, buildBatchTestInput, buildFileUploadInput} from "../../base/utils/tfUtils";
+import {generateUrlButtonBar, generateReportUrl, reqInfo,buildMaritalStatusInput, buildBatchTestInput, buildFileUploadInput} from "../../base/utils/tfUtils";
 import store from '../../tf_setup_n_maintenance';
 class generateReportApi {
-  static generate(pageid, data) {
-    let url = generateReportUrl(pageid);
+  static generate(pageid, data, extraInfo, fromBar) {
+    let url;
+    if(fromBar) {
+        url = generateUrlButtonBar(pageid);
+    } else {
+      url = generateReportUrl(pageid);
+    }
     let formInput;
     if(pageid === "batchTest")
     {
-        formInput = buildBatchTestInput(pageid, store, data);
+        formInput = buildBatchTestInput(pageid, store, data, extraInfo);
     } else if(pageid === "maritalStatusReport") {
-        formInput = buildMaritalStatusInput(pageid, store, data);
+        formInput = buildMaritalStatusInput(pageid, store, data, extraInfo);
     } else  {
-        formInput = buildFileUploadInput(pageid, store, data);
+        formInput = buildFileUploadInput(pageid, store, data, extraInfo, fromBar);
     }
 
     let tt = JSON.stringify(formInput);

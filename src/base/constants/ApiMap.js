@@ -78,11 +78,11 @@ import {
   GET_OPTIONAL_RATE_OVRD_BSI_WAGE,
   GET_CUSTOM_BACKUP_RESTORE,
   GET_CUSTOM_DATA_BACKUP,
-  GET_CUSTOM_DATA_RESTORE,
+  GENERATE_CUSTOM_DATA_RESTORE,
   GET_OPTIONAL_UNEMPLOYMENT_BACKUP,
-  GET_OPTIONAL_UNEMPLOYMENT_RESTORE,
+  GENERATE_OPTIONAL_UNEMPLOYMENT_RESTORE,
   GENERATE_DATABASE_LOAD,
-  SAVE_CUSTOM_DATA_BACKUP,
+  GENERATE_CUSTOM_DATA_BACKUP,
   GET_LOGINS,
   SAVE_LOGINS,
   DELETE_LOGINS,
@@ -91,7 +91,14 @@ import {
   GET_AUDIT_LOG_VIEWER_LOGIN,
   GET_AUDIT_LOG_VIEWER_DATASET,
   DELETE_ALL_LOG_VIEWER,
-  DEFAULT_PERMISSION
+  DEFAULT_PERMISSION,
+  GET_CUSTOM_RESTORE_STATUS,
+  PROCESS_CUSTOM_DATA_RESTORE,
+  GENERATE_OPTIONAL_UNEMPLOYMENT_BACKUP,
+  GET_OPTIONAL_UNEMPLOYMENT_RESTORE_STATUS,
+  GENERATE_OUTPUT_FILES,
+  GENERATE_PROCESS_DATABASE_LOAD,
+  GENERATE_DATABASE_OUTPUT_FILES
 } from './ServiceUrls';
 
 export const metaDataApiMap = {
@@ -122,7 +129,8 @@ export const metaDataApiMap = {
   databaseloadStatus: './_databaseloadStatus_MockData.json',
   manualupdateStatus: './_manualupdateStatus_MockData.json',
   logins: GET_LOGINS,
-  resetDefaultLogin: GET_PERMISSIONS
+  resetDefaultLogin: GET_PERMISSIONS,
+  optionalrestoreStatus: GET_OPTIONAL_UNEMPLOYMENT_RESTORE_STATUS
 };
 
 export const viewPDFButtonBar = {
@@ -131,6 +139,14 @@ export const viewPDFButtonBar = {
 
 export const viewPDFApiMap = {
   manualUpdate: VIEW_PDF_GROUP_OVERRIDE,
+}
+
+export const generateApiMapButtonBar = {
+  customdataRestore: PROCESS_CUSTOM_DATA_RESTORE,
+  customrestoreStatus: GENERATE_OUTPUT_FILES,
+  databaseLoad: GENERATE_PROCESS_DATABASE_LOAD,
+  optionalBackup: GENERATE_OPTIONAL_UNEMPLOYMENT_BACKUP,
+  databaseloadStatus: GENERATE_DATABASE_OUTPUT_FILES
 }
 
 export const deleteDataApiMap = {
@@ -158,14 +174,13 @@ export const saveAsAPIMap = {
 }
 
 export const generateApiMap = {
-  customdataRestore: GET_CUSTOM_DATA_RESTORE,
-  optionalRestore: GET_OPTIONAL_UNEMPLOYMENT_RESTORE,
+  customdataRestore: GENERATE_CUSTOM_DATA_RESTORE,
+  optionalRestore: GENERATE_OPTIONAL_UNEMPLOYMENT_RESTORE,
   databaseLoad: GENERATE_DATABASE_LOAD,
-  customdataBackup: SAVE_CUSTOM_DATA_BACKUP,
+  customdataBackup: GENERATE_CUSTOM_DATA_BACKUP,
   installmachineKey:'./_installmachineKey_MockData.json',
   manualUpdate:'./_manualUpdate_MockData.json',
   customrestoreStatus: './_customrestoreStatus_MockData.json',
-  optionalBackup: './_customrestoreStatus_MockData.json',
   manualupdateStatus: './_manualupdateStatus_MockData.json',
   databaseloadStatus: './_databaseloadStatus_MockData.json',
 };
@@ -244,5 +259,6 @@ export const autoCompleteApiMap = {
   orOverrideFormula:GET_OPTIONAL_RATE_OVRD_AUTO_COMP_FORM,
   orOverrideBsiWage:GET_OPTIONAL_RATE_OVRD_BSI_WAGE,
   selectLogin: GET_AUDIT_LOG_VIEWER_LOGIN,
-  selectDataSet: GET_AUDIT_LOG_VIEWER_DATASET
+  selectDataSet: GET_AUDIT_LOG_VIEWER_DATASET,
+  exitDataset: GET_AUDIT_LOG_VIEWER_DATASET,
 };

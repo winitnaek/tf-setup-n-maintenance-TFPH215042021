@@ -55,7 +55,7 @@ class ButtonBar extends Component {
     );
     let customdataBackup = (
       <Button id="customdataBackup" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleRunLocator("customdataBackup")}>
-        <i class="fas fa-hdd fa-lg fa-1x"></i> Backup
+        <i class={`${this.props.customForm ? "fas fa-play-circle fa-lg fa-1x" : "fas fa-hdd fa-lg fa-1x"}`}></i> {this.props.customForm ?  "Process": 'Backup'}
       </Button>
     );
     let deleteAll = (
@@ -74,59 +74,34 @@ class ButtonBar extends Component {
       </div>
     );
     let customdataRestore = (
-      <div>
-        <a href="#" id="process" onClick={() => this.props.handleRunLocator("")}>
-          <i class="fas fa-play-circle fa-lg fa-2x"></i>
-        </a>
-        <UncontrolledTooltip placement="right" target="process">
-          <span> Process </span>
-        </UncontrolledTooltip>
-      </div>
-    );
+        <Button id="process" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleRunLocator("")}>
+          <i class="fas fa-play-circle fa-lg fa-1x"></i> Process
+        </Button>
+      );
 
     let refreshStatusBackup = (
-      <div>
-        <a href="#" id="refresh" onClick={() => this.props.handleRunLocator(this.props.pageid)}>
-          <i class="fas fa-sync-alt fa-lg fa-2x"></i>
-        </a>
-        <UncontrolledTooltip placement="right" target="refresh">
-          <span> Refresh </span>
-        </UncontrolledTooltip>
-      </div>
+      <Button id="refresh" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.reRun(this.props.pageid)}>
+          <i class="fas fa-sync-alt fa-lg fa-1x"></i> Refresh Backup / Restore Load Status
+        </Button>
     );
 
     
     let showstatusBackup = (
-      <div>
-        <a href="#" id="files" onClick={() => this.props.handleRunLocator(this.props.pageid)}>
-          <i class="fas fa-file fa-lg fa-2x"></i>
-        </a>
-        <UncontrolledTooltip placement="right" target="files">
-          <span> Show Output Files </span>
-        </UncontrolledTooltip>
-      </div>
+      <Button id="files" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleRunLocator(this.props.pageid)}>
+      <i class="fas fa-file-alt fa-lg fa-1x"></i> Show Output Files
+    </Button>
     );
 
     let optionalBackup = (
-      <div>
-        <a href="#" id="process" onClick={() => this.props.handleRunLocator("optionalBackup")}>
-          <i class="fas fa-play-circle fa-lg fa-2x"></i>
-        </a>
-        <UncontrolledTooltip placement="right" target="process">
-          <span> Process </span>
-        </UncontrolledTooltip>
-      </div>
+      <Button id="process" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleRunLocator("optionalBackup")}>
+          <i class="fas fa-play-circle fa-lg fa-1x"></i> Process
+        </Button>
     );
 
     let viewPdfSummary = (
-      <div>
-        <a href="#" id="process" onClick={(event) => this.props.handlePdf(event)}>
-          <i class="fas fa-play-circle fa-lg fa-2x"></i>
-        </a>
-        <UncontrolledTooltip placement="right" target="process">
-          <span> View Pdf Summary </span>
-        </UncontrolledTooltip>
-      </div>
+      <Button id="pdfSummary" color="primary" size="sm" style={{marginRight:'20px'}} onClick={(event) => this.props.handlePdf(event)}>
+          <i class="far fa-file-pdf fa-lg fa-1x"></i> View Summary
+        </Button>
     );
     let checkAll = (
       <Button id="checkAll" color="primary" size="sm" style={{marginRight:'20px'}} onClick={() => this.props.handleCheckAll(true)}>
@@ -144,7 +119,7 @@ class ButtonBar extends Component {
       </Button>
     );
     let viewPdf = (
-      <Button id="saveCheck" color="primary" size="sm" style={{marginRight:'20px'}} onClick={(event) => this.props.handlePdf(event)}>
+      <Button id="viewPdfButtonbar" color="primary" size="sm" style={{marginRight:'20px'}} onClick={(event) => this.props.handlePdf(event)}>
         <i class="far fa-file-pdf fa-lg fa-1x"></i> View Pdf
       </Button>
     );
