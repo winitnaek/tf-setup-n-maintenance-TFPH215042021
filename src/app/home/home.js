@@ -112,7 +112,8 @@ class TFHome extends Component {
     if(!isMock()){
       excluededPages = ["testHarness", "selectSamplePage", "dateFieldDoc","UQ","CD","GD","CT","MT","TS","PD"];
     }
-    let arr = tftools.filter(tool => !excluededPages.includes(tool.value)).sort(this.GetSortOrder("label"));
+    let perms = getAllRights();
+    let arr = tftools.filter(tool => !excluededPages.includes(tool.value) && perms[tool.value] && perms[tool.value][0]===1).sort(this.GetSortOrder("label"));
     console.log(arr);
 
     const env = this.props.environment;
@@ -122,7 +123,16 @@ class TFHome extends Component {
     }
     return arr ;//tftools.filter(tool => !excluededPages.includes(tool.value)).sort(this.GetSortOrder("label"));
   }
+  getTFTools() {
+    let perms = getAllRights();
+    let arr = tftools.filter(tool => perms[tool.value] && perms[tool.value][0]===1).sort(this.GetSortOrder("label"));
+    const env = this.props.environment;
 
+    if(env.tfSaas) {
+      arr = arr.filter(screen => !screen.hideSaaS)
+    }
+    return arr;
+  }
   GetSortOrder(prop) {
     return function (a, b) {
       if (a[prop] > b[prop]) {
@@ -164,7 +174,7 @@ class TFHome extends Component {
               formProps={formProps}
               filter={false}
               isfilterform={isfilterform}
-              tftools={tftools.sort(this.GetSortOrder("label"))}
+              tftools={this.getTFTools().sort(this.GetSortOrder("label"))}
               metadata={formMetaData[pgid]}
               fieldData={fieldDataX}
               recentUsage={getUsageData}
@@ -179,7 +189,7 @@ class TFHome extends Component {
               <div id="pageContainer" className="container w-100 pl-5 pr-5" style={{ maxWidth: "100%" }}>
                 <FlyoutMenu
                   favorites={this.props.favorites}
-                  options={this.getOptions()}
+                  options={this.getTFTools()}
                   showSideMenu={false}
                   setFavorite={this.setFavorite}
                   renderApplication={this.renderApplication}
