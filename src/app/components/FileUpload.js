@@ -42,6 +42,7 @@ class FileUpload extends Component {
       disableForm: false,
       errorMessage: null,
       loading: false,
+      pgSubtitle: pageDef.pgsubtitle,
     };
     const toBase64 = file =>
       new Promise((resolve, reject) => {
@@ -108,7 +109,9 @@ class FileUpload extends Component {
       generateReportAPI.generate(pgid, data, extraInfo).then(uploadResults => {
         let res = uploadResults;
         if (pgid === "databaseLoad") {
-          metaData[pgid].pgdef.pgsubtitle += fileName;
+          this.setState({
+            pgSubtitle: this.state.pgSubtitle + fileName,
+          })
         }
         if(pgid === "customdataRestore") {
             res = uploadResults.filePkgList;
@@ -177,7 +180,7 @@ class FileUpload extends Component {
       >
         {this.state.errorMessage ? this.state.errorMessage : "Test Result for:"}
         <div style={{ display: "flex" }}>
-        {(Array.isArray(this.state.showAdditonalInfo) ? this.state.showAdditonalInfo : this.state.uploadResults || []).map((info, index) => {
+        {(Array.isArray(this.state.showAdditonalInfo) ? this.state.showAdditonalInfo : (Array.isArray(this.state.uploadResults) ?  this.state.uploadResults : [])).map((info, index) => {
           return (
             <div>
               <div
@@ -258,7 +261,6 @@ class FileUpload extends Component {
                 showAdditonalInfo: {
                   status: "warning"
                 },
-                uploadResults: null,
                 errorMessage: "Please Select a Valid dataset",
                 showAlert: true,
               });
@@ -382,11 +384,20 @@ class FileUpload extends Component {
             renderAdditionalInfo={() => {}}
             selectAllOutside={this.setCustomFormData}
             rowTicked={this.rowTicked}
+            pgSubtitle={this.state.pgSubtitle}
         />  
         </Fragment>: null}
         {fieldDataX && fieldDataX.length ? <Row>
           <Col>
-          <div>
+          <div style={{
+        backgroundColor: '#fff',
+        border: '1px solid #adb5bd',
+        borderRadius: '0.25rem',
+        height: 'auto',
+        padding: '32px',
+        marginTop: '20px',
+        marginLeft: '-15px'
+      }}> 
             <CustomForm 
               disableForm={this.state.disableForm} 
               fieldData={fieldDataX} 

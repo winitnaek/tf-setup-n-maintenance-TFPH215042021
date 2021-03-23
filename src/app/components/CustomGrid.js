@@ -44,7 +44,6 @@ class CustomGrid extends Component {
       showCustomForm: false,
       loading: false,
       errorMessage: null,
-      spinner: false,
     };
 
     this.renderGrid = pgData => {
@@ -160,6 +159,8 @@ class CustomGrid extends Component {
     });
   }
 
+
+
   handleHidePDF() {
     this.setState({ showPDF: false });
   }
@@ -247,14 +248,11 @@ class CustomGrid extends Component {
     const gridStyle =
       !this.props.isSaas || this.props.pageid === "custombackupRestore"
         ? {
-            width: "85%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginLeft: this.getMarginLeft(),
-            marginTop: this.getMarginTop(),
-            position: "absolute",
-            zIndex: 2
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "50%",
+          margin: "0px auto 10px auto"
           }
         : {
             display: "flex",
@@ -380,7 +378,8 @@ class CustomGrid extends Component {
     this.setState({
       isOpen: !this.state.isOpen,
       showAdditonalInfo: null,
-      exitDataset: null
+      exitDataset: null,
+      loading: false,
     });
   }
 
@@ -433,7 +432,7 @@ class CustomGrid extends Component {
       }
     }
     let payload = [];
-    if (document.querySelector("div[role='grid']")) {
+    if (document.querySelector("div[role='grid']") && !this.state.showCustomForm) {
       let _id = document.querySelector("div[role='grid']").id;
       if(document.querySelectorAll("div[role='grid']")[1]) {
         _id = document.querySelectorAll("div[role='grid']")[1].id;
@@ -442,7 +441,7 @@ class CustomGrid extends Component {
       for (let i = 0; i < griddata.rowscount; i++) {
         const rowData = $("#" + _id).jqxGrid("getrenderedrowdata", i);
         const checkBoxKey = Object.keys(rowData).filter(k => rowData[k] === true);
-        if (rowData[checkBoxKey]) {
+        if (rowData[checkBoxKey.filter(key => key !== 'disabled')]) {
           payload.push(rowData);
         }
       }
@@ -457,6 +456,8 @@ class CustomGrid extends Component {
         showAdditonalInfo: response,
         loading: false
       });
+    }).catch((error) => {
+      this.setState({ loading: false });
     });
   }
 
@@ -491,6 +492,7 @@ class CustomGrid extends Component {
     const childMetaData = this.state.clickedPageId && compMetaData(this.state.clickedPageId);
     return (
       <Fragment>
+        {this.state.loading && !this.state.isOpen && <i class="fas fa-spinner fa-spin fa-2x" style={{  color: 'green', width: 'max-content', margin: '0 auto', display: 'flex', }}></i> }
         {this.renderAlert(griddef.hasAlert)}
         <ViewPDF
           view={this.state.viewPdfMode}
@@ -569,7 +571,7 @@ class CustomGrid extends Component {
           <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>
             <Row>
-            {this.state.spinner && <i class="fas fa-spinner fa-spin fa-2x" style={{  color: 'green', width: 'max-content', margin: '0 auto', display: 'flex', }}></i> }
+              {this.state.loading && !this.state.showCustomForm && <i class="fas fa-spinner fa-spin fa-2x" style={{  color: 'green', width: 'max-content', margin: '0 auto', display: 'flex', }}></i> }
               <Col>{this.renderAlert(childMetaData && childMetaData.griddef.hasAlert)}</Col>
             </Row>
             <Row>

@@ -98,7 +98,8 @@ import {
   GET_OPTIONAL_UNEMPLOYMENT_RESTORE_STATUS,
   GENERATE_OUTPUT_FILES,
   GENERATE_PROCESS_DATABASE_LOAD,
-  GENERATE_DATABASE_OUTPUT_FILES
+  GENERATE_DATABASE_OUTPUT_FILES,
+  GET_DATABASE_LOAD_STATUS
 } from './ServiceUrls';
 
 export const metaDataApiMap = {
@@ -125,8 +126,8 @@ export const metaDataApiMap = {
   custombackupRestore: GET_CUSTOM_BACKUP_RESTORE,
   customdataBackup: GET_CUSTOM_DATA_BACKUP,
   optionalBackup: GET_OPTIONAL_UNEMPLOYMENT_BACKUP,
-  customrestoreStatus: './_customrestoreStatus_MockData.json',
-  databaseloadStatus: './_databaseloadStatus_MockData.json',
+  customrestoreStatus: GET_CUSTOM_RESTORE_STATUS,
+  databaseloadStatus: GET_DATABASE_LOAD_STATUS,
   manualupdateStatus: './_manualupdateStatus_MockData.json',
   logins: GET_LOGINS,
   resetDefaultLogin: GET_PERMISSIONS,

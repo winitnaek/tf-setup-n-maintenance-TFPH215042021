@@ -94,6 +94,7 @@ export const PROCESS_CUSTOM_DATA_RESTORE = '/FileUploaderService/restoreDatasets
 export const GET_OPTIONAL_UNEMPLOYMENT_RESTORE_STATUS = '/FileUploaderService/getBackUpRestoreStatus'
 export const GENERATE_OUTPUT_FILES = '/FileUploaderService/backupRestoreOutputFiles'
 export const GENERATE_DATABASE_OUTPUT_FILES = '/FileUploaderService/databaseLoadOutputFiles'
+export const GET_DATABASE_LOAD_STATUS = '/FileUploaderService/getDbLoadStatus'
 //Datasets API Start
 export const GET_DATASETS = '/DatasetService/getDatasetList';
 export const SAVE_DATASET = '/DatasetService/saveDataset';

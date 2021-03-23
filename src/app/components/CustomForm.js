@@ -94,7 +94,7 @@ class CustomForm extends React.Component {
       style = { display: 'flex', alignItems: 'center', marginLeft: '-20px', marginTop: '20px'};
     }
     return (
-      <Fragment>
+      <div>
           {finalFields.map((field) => {
               const { id, value, checked, placeholder, label, alignedField = '', name, fieldtype } = field;
               switch(field.fieldtype) {
@@ -163,7 +163,7 @@ class CustomForm extends React.Component {
               )
               }
           })}
-      </Fragment>
+      </div>
     );
   }
 }

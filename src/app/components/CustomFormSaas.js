@@ -71,7 +71,7 @@ class CustomFormSaas extends React.Component {
   render() {
     const { fieldData, loading, title } = this.props;
     return (
-      <Fragment>
+      <div>
           <div>
             {loading && <i class="fas fa-spinner fa-spin fa-2x" style={{  color: 'green', width: 'max-content', margin: '0 auto', display: 'flex', }}></i> }
           </div>
@@ -116,7 +116,7 @@ class CustomFormSaas extends React.Component {
               )
               }
           })}
-      </Fragment>
+      </div>
     );
   }
 }
