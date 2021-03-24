@@ -7,7 +7,7 @@ export default {
   },
   favoriteAreas: [],
   environment : {
-    tfSaas: false,
+    tfSaas: true,
     isEU: true
   },
 
