@@ -29,6 +29,8 @@ import {auditLogViewerGridInput,buildAuditLogViewerDeleteAll} from './aLogViewer
 import { generateCustomBackupAPI, generateUploadCustomRestoreAPI, processCustomRestoreAPI } from './cBackupRestoreUtil';
 import { generateOptionalBackupAPI, generateUploadOptionalRestoreAPI } from './ourOverrideBackupUtil';
 import { generateDatabaseUploadAPI, generateProcessDatabaseUploadAPI } from './dbLoadUtil';
+import { generateMachineKeyUploadAPI } from './iMachineKeyUtil';
+import { generateManualUpdateUploadAPI } from './manualUpdateUtil';
 /**
  * buildModuleAreaLinks
  * @param {*} apps
@@ -345,6 +347,10 @@ export function buildFileUploadInput(pageid, store, data, extraInfo, fromBar) {
     return generateOptionalBackupAPI(pageid, store, data, extraInfo);
   }else if(pageid === "optionalRestore") {
     return generateUploadOptionalRestoreAPI(pageid, store, data, extraInfo);
+  }else if(pageid === "installmachineKey") {
+    return generateMachineKeyUploadAPI(pageid, store, data, extraInfo);
+  }else if(pageid === "manualUpdate") {
+    return generateManualUpdateUploadAPI(pageid, store, data, extraInfo);
   } else if(pageid === "databaseLoad" && !fromBar) {
     return generateDatabaseUploadAPI(pageid, store, data, extraInfo);
   } else if(pageid === "databaseLoad" && fromBar) {

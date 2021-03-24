@@ -99,7 +99,12 @@ import {
   GENERATE_OUTPUT_FILES,
   GENERATE_PROCESS_DATABASE_LOAD,
   GENERATE_DATABASE_OUTPUT_FILES,
-  GET_DATABASE_LOAD_STATUS
+  GET_DATABASE_LOAD_STATUS,
+  GENERATE_MACHINE_KEY,
+  GENERATE_MANUAL_UPDATE,
+  GENERATE_MANUAL_UPDATE_PDF,
+  GET_MANUAL_UPDATE_STATUS,
+  GENERATE_MANUAL_UPDATE_OUTPUT_FILES
 } from './ServiceUrls';
 
 export const metaDataApiMap = {
@@ -128,7 +133,7 @@ export const metaDataApiMap = {
   optionalBackup: GET_OPTIONAL_UNEMPLOYMENT_BACKUP,
   customrestoreStatus: GET_CUSTOM_RESTORE_STATUS,
   databaseloadStatus: GET_DATABASE_LOAD_STATUS,
-  manualupdateStatus: './_manualupdateStatus_MockData.json',
+  manualupdateStatus: GET_MANUAL_UPDATE_STATUS,
   logins: GET_LOGINS,
   resetDefaultLogin: GET_PERMISSIONS,
   optionalrestoreStatus: GET_OPTIONAL_UNEMPLOYMENT_RESTORE_STATUS
@@ -139,7 +144,7 @@ export const viewPDFButtonBar = {
 }
 
 export const viewPDFApiMap = {
-  manualUpdate: VIEW_PDF_GROUP_OVERRIDE,
+  manualUpdate: GENERATE_MANUAL_UPDATE_PDF,
 }
 
 export const generateApiMapButtonBar = {
@@ -147,7 +152,9 @@ export const generateApiMapButtonBar = {
   customrestoreStatus: GENERATE_OUTPUT_FILES,
   databaseLoad: GENERATE_PROCESS_DATABASE_LOAD,
   optionalBackup: GENERATE_OPTIONAL_UNEMPLOYMENT_BACKUP,
-  databaseloadStatus: GENERATE_DATABASE_OUTPUT_FILES
+  databaseloadStatus: GENERATE_DATABASE_OUTPUT_FILES,
+  manualupdateStatus: GENERATE_MANUAL_UPDATE_OUTPUT_FILES,
+  optionalrestoreStatus: GENERATE_OUTPUT_FILES
 }
 
 export const deleteDataApiMap = {
@@ -179,8 +186,8 @@ export const generateApiMap = {
   optionalRestore: GENERATE_OPTIONAL_UNEMPLOYMENT_RESTORE,
   databaseLoad: GENERATE_DATABASE_LOAD,
   customdataBackup: GENERATE_CUSTOM_DATA_BACKUP,
-  installmachineKey:'./_installmachineKey_MockData.json',
-  manualUpdate:'./_manualUpdate_MockData.json',
+  installmachineKey: GENERATE_MACHINE_KEY,
+  manualUpdate: GENERATE_MANUAL_UPDATE,
   customrestoreStatus: './_customrestoreStatus_MockData.json',
   manualupdateStatus: './_manualupdateStatus_MockData.json',
   databaseloadStatus: './_databaseloadStatus_MockData.json',

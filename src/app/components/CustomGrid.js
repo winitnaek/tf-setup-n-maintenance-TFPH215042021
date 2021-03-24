@@ -244,21 +244,38 @@ class CustomGrid extends Component {
     }, 100);
   }
 
+  getIsSaas(isSaas, pgid) {
+    if(!isSaas) {
+      if(pgid === "customrestoreStatus" || pgid === "optionalrestoreStatus") {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return this.props.pageid === "optionalBackup" ?  true : false;
+    }
+  }
+
   renderAlert(isAlert) {
     const gridStyle =
-      !this.props.isSaas || this.props.pageid === "custombackupRestore"
+      this.getIsSaas(this.props.isSaas, this.props.pageid) || this.props.pageid === "custombackupRestore"
         ? {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          width: "50%",
-          margin: "0px auto 10px auto"
+          width: "80%",
+          margin: "0px auto 10px auto",
+          marginTop: this.props.pageid === "optionalBackup" ?  "75px" : "40px",
+          position: "absolute",
+          left: "0",
+          right: "0",
+          zIndex: 2
           }
         : {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            width: "50%",
+            width: "80%",
             margin: "0px auto 10px auto"
           };
     const gridStyleAlert = {
@@ -572,7 +589,7 @@ class CustomGrid extends Component {
           <ModalBody>
             <Row>
               {this.state.loading && !this.state.showCustomForm && <i class="fas fa-spinner fa-spin fa-2x" style={{  color: 'green', width: 'max-content', margin: '0 auto', display: 'flex', }}></i> }
-              <Col>{this.renderAlert(childMetaData && childMetaData.griddef.hasAlert)}</Col>
+              {this.state.showAdditonalInfo && childMetaData && childMetaData.griddef.hasAlert && <Col>{this.renderAlert(childMetaData && childMetaData.griddef.hasAlert)}</Col>}
             </Row>
             <Row>
               <Col className="grid-modal mr-2 ml-2">
@@ -627,7 +644,7 @@ class CustomGrid extends Component {
                         pid={pid}
                         permissions={permissions}
                         tftools={tftools}
-                        customForm={this.state.showCustomForm}
+                        customForm={this.state.showCustomForm || this.props.pageid === "custombackupRestore"}
                         handleRunLocator={clickedPageId =>
                           this.handleRunLocator(clickedPageId, childMetaData && childMetaData.griddef)
                         }

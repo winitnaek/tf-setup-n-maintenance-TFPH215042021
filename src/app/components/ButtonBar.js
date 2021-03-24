@@ -212,7 +212,7 @@ class ButtonBar extends Component {
       saveCheck = null;
       viewPdf = null;
     }
-    else if(this.props.pageid==='customrestoreStatus' || this.props.pageid==='manualupdateStatus' || this.props.pageid==="databaseloadStatus" ){ //customdataRestore
+    else if(this.props.pageid==='customrestoreStatus' || this.props.pageid==='manualupdateStatus' || this.props.pageid==="databaseloadStatus" || this.props.pageid==="optionalrestoreStatus" ){ //customdataRestore
       taxLocator=null;
       calculateTaxes=null;
       runLocatorService=null;

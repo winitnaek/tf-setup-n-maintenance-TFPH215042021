@@ -95,6 +95,11 @@ export const GET_OPTIONAL_UNEMPLOYMENT_RESTORE_STATUS = '/FileUploaderService/ge
 export const GENERATE_OUTPUT_FILES = '/FileUploaderService/backupRestoreOutputFiles'
 export const GENERATE_DATABASE_OUTPUT_FILES = '/FileUploaderService/databaseLoadOutputFiles'
 export const GET_DATABASE_LOAD_STATUS = '/FileUploaderService/getDbLoadStatus'
+export const GENERATE_MACHINE_KEY = '/FileUploaderService/installMachineKey'
+export const GENERATE_MANUAL_UPDATE = '/FileUploaderService/manualUpdate'
+export const GENERATE_MANUAL_UPDATE_PDF = '/FileUploaderService/generateBulletinListPDF'
+export const GET_MANUAL_UPDATE_STATUS = '/FileUploaderService/getManualUpdateStatus'
+export const GENERATE_MANUAL_UPDATE_OUTPUT_FILES = '/FileUploaderService/manualUpdateOutputFiles'
 //Datasets API Start
 export const GET_DATASETS = '/DatasetService/getDatasetList';
 export const SAVE_DATASET = '/DatasetService/saveDataset';

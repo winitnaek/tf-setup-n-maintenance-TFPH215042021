@@ -120,6 +120,21 @@ class FileUpload extends Component {
         if(pgid === "optionalRestore") {
           res = uploadResults.fileOutputs;
         }
+
+        if(pgid === "installmachineKey") {
+          this.setState({
+            showAdditonalInfo: {
+              status: uploadResults.errorList.length > 0 ? "danger" : "success"
+            },
+            errorMessage: uploadResults.errorList.length > 0 ? uploadResults.errorList[0] : uploadResults.message,
+            showAlert: true,
+            loading: false,
+            fileName: '',
+            filePath: ''
+          });
+          return;
+        }
+
         this.setState({
           uploadResults: res,
           showAlert: true,
@@ -130,6 +145,14 @@ class FileUpload extends Component {
           fileName: '',
           filePath: ''
         });
+
+        if(pgid === "optionalRestore" && !this.props.isSaas) {
+          this.openLink();
+        }
+
+        if(pgid === "manualUpdate" && !this.props.isSaas) {
+          this.openLink();
+        }
       });
     };
 
@@ -280,7 +303,7 @@ class FileUpload extends Component {
         }
        
         const data = await generateReportAPI.generate(this.props.pgid, payload, extraInfo, true).then(response => {
-         if(this.props.pgid === "customdataRestore") {
+         if(this.props.pgid === "customdataRestore" || this.props.pgid === "databaseLoad" ) {
             this.openLink();
          } else {
           this.setState({
@@ -389,7 +412,7 @@ class FileUpload extends Component {
         </Fragment>: null}
         {fieldDataX && fieldDataX.length ? <Row>
           <Col>
-          <div style={{
+          <div style={!(hasGrid && !this.state.hideGrid) ? {
         backgroundColor: '#fff',
         border: '1px solid #adb5bd',
         borderRadius: '0.25rem',
@@ -397,7 +420,11 @@ class FileUpload extends Component {
         padding: '32px',
         marginTop: '20px',
         marginLeft: '-15px'
-      }}> 
+      } : { height: 'auto',
+      padding: '32px',
+      paddingTop: '10px',
+      paddingLeft: '4px'
+    } }> 
             <CustomForm 
               disableForm={this.state.disableForm} 
               fieldData={fieldDataX} 
