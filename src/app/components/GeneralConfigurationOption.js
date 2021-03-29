@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Container, UncontrolledTooltip } from "reactstrap";
-import { DynamicForm } from "bsiuilib";
+import { Row, Col, Container, UncontrolledTooltip, Label, Input, Button } from "reactstrap";
+import { ConfirmModal } from "bsiuilib";
+import formDataAPI from "../api/formDataAPI";
 import savegriddataAPI from "../api/savegriddataAPI";
+import griddataAPI from "../api/griddataAPI";
+import generateReportApi from "../api/generateReportApi";
 import { tftools } from "../../base/constants/TFTools";
 import * as metaData from "../metadata/metaData";
 import * as styles from "../../base/constants/AppConstants";
@@ -17,6 +20,10 @@ class GeneralConfigurationOption extends Component {
     this.state = {
       url: "",
       docData: "",
+      options: [],
+      val: [],
+      showConfirm: false,
+      message: '',
     };
     this.renderMe = (pgid, formValues, response) => {
       console.log("pgid");
@@ -33,8 +40,50 @@ class GeneralConfigurationOption extends Component {
       this.props.help(this.props.pgid);
     };
   }
+
+  onValueChange(index, value, item = {}) {
+    if (this.state.val.length > 0) {
+      const val = this.state.val;
+      const i = index === 6 ? 7 : index; 
+      val[i].optnrsp = value;
+      this.setState({ val });
+    } else {
+      this.setState({ 
+        [index]: value 
+      });
+    }
+
+    //this.props.updateFormValue(id, value);
+  }
+
+  async saveData(pgid) {
+      let options = await savegriddataAPI.saveGridData(pgid, this.state.val, {});
+      console.log('res',options);
+      this.setState({ showConfirm: true, message: options.message });
+}
+  async getData(isReset) {
+    const response = await griddataAPI.getGridData(this.props.pgid, {userId: appUserId(),
+    dataset: appDataset(),
+    resetConfig: isReset}, {});
+    const val = response.optnList;
+    this.setState({ val });
+  }
+  
+  componentDidMount(){
+    this.getData(false);  
+  }
+
+  getValue(index) {
+    if (this.state.val.length > 0) {
+      const item = index === 6 ? 7 : index;
+      return this.state.val[item].optnrsp;
+    } else {
+      return 0;
+    }
+  }
+
   render() {
-    const { pgid, formData, formFilterData } = this.props;
+    const { pgid, formData, formFilterData, isSaas } = this.props;
     const { url } = this.state;
     const { pgdef } = metaData[pgid];
     const formProps = {
@@ -64,8 +113,9 @@ class GeneralConfigurationOption extends Component {
             </UncontrolledTooltip>
           </span>
         </Row>
-        <Row>
+        <Row style={{ border: '1px solid black '}}>
           <Col>
+            {/*
             <DynamicForm
               formData={formData}
               filterFormData={formFilterData}
@@ -77,9 +127,49 @@ class GeneralConfigurationOption extends Component {
               fieldData={fieldDataX}
               formHandlerService={savegriddataAPI}
               styles={styles}
-            />
+            /> */
+            }
+            {fieldDataX.map((field, index) => {
+              const { id, value, checked, hideSaas, label, alignedField = '', name, fieldtype, fieldinfo } = field;
+              return (
+                !(isSaas && hideSaas) && <Row>
+                    <Row style={{ marginTop: '15px', marginBottom: '10px', width: '100%' }}>
+                        <Label style={{ width: '40%',textAlign: 'right' }}>
+                            {label}
+                        </Label>
+                        <Input style={{
+                                    height: '30px',
+                                    width: '300px',
+                                    margin: '0 20px'
+                            }} value={this.getValue(index)} onChange={(evt) => this.onValueChange(index, evt.target.value)} type={fieldtype} name={id} id={id} defaultValue={value}>
+                                {fieldinfo.options.map((opt) => {
+                                    return (
+                                        <option index={opt.id || opt} value={opt.id || opt}>
+                                         {opt.label || opt}
+                                        </option>
+                                    );
+                                })}
+                            </Input>
+                    </Row>
+                </Row>
+              )
+            })
+            }
           </Col>
         </Row>
+        <Row style={{ marginTop: '30px', marginLeft: '35%' }}>
+              <Button onClick={() => this.saveData(this.props.pgid)} className="btn btn-success">Save</Button>
+              <Button onClick={() => this.getData(true)} className="btn btn-primary mr-auto btn btn-warning" style={{marginLeft:'90px'}}>Reset</Button>
+          </Row>
+          <ConfirmModal
+          showConfirm={this.state.showConfirm}
+          okbtnlbl="OK"
+          cancelbtnlbl=""
+          cheader="Save"
+          cbody={this.state.message}
+          handleOk={() => { this.setState({ showConfirm: false, message: '' });}}
+          handleCancel={() => {}}
+        />
       </Container>
     );
   }
@@ -88,7 +178,8 @@ function mapStateToProps(state) {
   return {
     isOpen: state.formData.isOpen,
     formData: state.formData,
-    formFilterData: state.formFilterData
+    formFilterData: state.formFilterData,
+    isSaas: state.environmentReducer.tfSaas,
   };
 }
 

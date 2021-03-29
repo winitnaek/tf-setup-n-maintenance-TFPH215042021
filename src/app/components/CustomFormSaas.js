@@ -30,6 +30,13 @@ class CustomFormSaas extends React.Component {
   }
 
   componentDidMount() {
+    const { fieldData } = this.props;
+
+    fieldData.map(data => {
+      if(data.fieldtype === 'select' && data.fieldinfo.isasync){
+        this.getOptions(data.id, data.value);
+      }
+    });
     this.setFieldState();
   }
 

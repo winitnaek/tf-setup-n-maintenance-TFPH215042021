@@ -68,7 +68,7 @@ class FileUpload extends Component {
     };
 
     this.onUpload = () => {
-      const { pgid } = this.props;
+      const { pgid, isSaas } = this.props;
       const { base64File } = this;
       const { fileName } = this.state;
 
@@ -93,6 +93,22 @@ class FileUpload extends Component {
             },
             uploadResults: null,
             errorMessage: "Only *.csv files can be restored.",
+            showAlert: true,
+
+          });
+          return;
+        }
+      }
+
+      if(pgid === "customdataRestore" && isSaas) {
+        const fileNameArray = fileName.split(".");
+        if(fileNameArray[fileNameArray.length - 1] !== "xml") {
+          this.setState({
+            showAdditonalInfo: {
+              status: "warning"
+            },
+            uploadResults: null,
+            errorMessage: "Only *.xml files can be restored.",
             showAlert: true,
 
           });

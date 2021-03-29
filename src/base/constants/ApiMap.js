@@ -104,7 +104,9 @@ import {
   GENERATE_MANUAL_UPDATE,
   GENERATE_MANUAL_UPDATE_PDF,
   GET_MANUAL_UPDATE_STATUS,
-  GENERATE_MANUAL_UPDATE_OUTPUT_FILES
+  GENERATE_MANUAL_UPDATE_OUTPUT_FILES,
+  GET_GENERAL_CONFIG_OPTION,
+  SAVE_GENERAL_CONFIG_OPTION
 } from './ServiceUrls';
 
 export const metaDataApiMap = {
@@ -136,7 +138,8 @@ export const metaDataApiMap = {
   manualupdateStatus: GET_MANUAL_UPDATE_STATUS,
   logins: GET_LOGINS,
   resetDefaultLogin: GET_PERMISSIONS,
-  optionalrestoreStatus: GET_OPTIONAL_UNEMPLOYMENT_RESTORE_STATUS
+  optionalrestoreStatus: GET_OPTIONAL_UNEMPLOYMENT_RESTORE_STATUS,
+  generalconfigOption: GET_GENERAL_CONFIG_OPTION,
 };
 
 export const viewPDFButtonBar = {
@@ -174,7 +177,8 @@ export const saveDataApiMap = {
   permissions: SAVE_PERMISSIONS,
   unemploymentCompanyOverrides:GET_UM_EMPLOYMENT_OVERRIDE_SAVE,
   generalconfigOption: './_customrestoreStatus_MockData.json',
-  dataSets: SAVE_DATASET
+  dataSets: SAVE_DATASET,
+  generalconfigOption: SAVE_GENERAL_CONFIG_OPTION
 };
 
 export const saveAsAPIMap = {

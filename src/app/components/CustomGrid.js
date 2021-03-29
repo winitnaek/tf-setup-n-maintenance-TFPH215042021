@@ -84,7 +84,9 @@ class CustomGrid extends Component {
           data.push(rowData);
         }
       }
-      const pdfData = await getPdfDataAPI.getPdfData(pageid, data, undefined, fromBar);
+
+      const filteredData = data.filter(cell => cell != undefined );
+      const pdfData = await getPdfDataAPI.getPdfData(pageid, filteredData, undefined, fromBar);
       this.setState({
         viewPdfMode: !this.state.viewPdfMode,
         pdfData

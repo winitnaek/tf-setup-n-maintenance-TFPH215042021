@@ -31,6 +31,7 @@ import { generateOptionalBackupAPI, generateUploadOptionalRestoreAPI } from './o
 import { generateDatabaseUploadAPI, generateProcessDatabaseUploadAPI } from './dbLoadUtil';
 import { generateMachineKeyUploadAPI } from './iMachineKeyUtil';
 import { generateManualUpdateUploadAPI } from './manualUpdateUtil';
+import { buildGeneralConfigOptionSaveInput } from './gConfiguratuionUtil';
 /**
  * buildModuleAreaLinks
  * @param {*} apps
@@ -734,9 +735,10 @@ export function buildSaveInputForPage(pageid, formdata, editMode, state) {
   if (pageid === 'dataSets') {
     return buildDataSetsSaveInput(pageid, formdata, editMode, state);
   }else if (pageid === 'logins') {
-      return buildLoginsSaveInput(pageid, formdata, editMode, state);;
-  }
-  else if (pageid === 'permissions') {
+      return buildLoginsSaveInput(pageid, formdata, editMode, state);
+  }else if (pageid === 'generalconfigOption') {
+    return buildGeneralConfigOptionSaveInput(pageid, formdata, editMode, state);
+  }else if (pageid === 'permissions') {
     return buildPermissionsSaveInput(pageid, formdata, editMode, state);;
 }  else {
     return buildOtherSaveInput(pageid, formdata, editMode);
