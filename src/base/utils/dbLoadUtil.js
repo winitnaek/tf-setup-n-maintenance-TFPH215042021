@@ -18,3 +18,12 @@ export function generateProcessDatabaseUploadAPI(pageid, store, data = [], extra
         "fileName":"TF11DB_1615906162093_TFM11046Sample.PKG"
     }
 }
+
+export function databaseLoadStatusGridInput(pageId, formData, stDate, enDate, state) {
+    let input = {
+            
+        dataset:appDataset(),
+        userID:appUserId()       
+};
+    return input;
+  }
