@@ -34,7 +34,7 @@ import { setModuleAreas } from "./app/home/actions/moduleLinksActions";
 import { getFavoriteLinks } from "./app/home/actions/favoriteLinksActions";
 import CustomGrid from "./app/components/CustomGrid";
 import ReusablePage from "./app/components/ReusablePage";
-import { UI_COMP, UI_PAGE, UI_TEST, tftools } from "./base/constants/TFTools";
+import { UI_COMP, UI_PAGE, UI_TEST, tftools, UI_EXTN} from "./base/constants/TFTools";
 import griddataAPI from "./app/api/griddataAPI";
 //Temporary set user in session:======Comment this when deployed with MAC======
 if (!sessionStorage.getItem("up")) {
@@ -102,6 +102,8 @@ function renderTFSetupNMaintenance(elem, renderName, renderCtx) {
     renderTestHarness(elem, renderName.id, renderName.value);
   } else if (renderName && renderName === rname.RN_TF_CSTMCOMP) {
     renderCustomComponent(elem, renderName);
+  } else if (renderName && renderName.type == UI_EXTN) {
+    window.open(renderName.href, "_blank");
   }
 }
 
