@@ -33,3 +33,12 @@ export function processCustomRestoreAPI(pageid, store, data, extraInfo) {
         existingDataset: extraInfo.existingDataset,
     }
 }
+
+export function customrestoreStatusGridInput(pageId, formData, stDate, enDate, state) {
+    let input = {
+            
+        dataset:appDataset(),
+        userID:appUserId()       
+};
+    return input;
+  }

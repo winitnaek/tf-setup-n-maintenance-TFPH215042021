@@ -6,3 +6,12 @@ export function generateManualUpdateUploadAPI(pageid, store, data = "", extraInf
         fileName: extraInfo.fileName,
     }
 }
+
+export function manualUpdateStatusGridInput(pageId, formData, stDate, enDate, state) {
+    let input = {
+            
+        dataset:appDataset(),
+        userID:appUserId()       
+};
+    return input;
+  }

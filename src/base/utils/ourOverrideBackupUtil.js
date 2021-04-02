@@ -20,3 +20,12 @@ export function generateUploadOptionalRestoreAPI(pageid, store, data = "", extra
         fileName: extraInfo.fileName,
     }
 }
+
+export function optionalrestoreStatusGridInput(pageId, formData, stDate, enDate, state) {
+    let input = {
+            
+        dataset:appDataset(),
+        userID:appUserId()       
+};
+    return input;
+  }

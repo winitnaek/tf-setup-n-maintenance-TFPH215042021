@@ -26,11 +26,11 @@ import store from "../../tf_setup_n_maintenance";
 import {dataSetsGridInput, buildDataSetsSaveInput, buildDataSetsDeleteInput} from '../utils/datasetsUtil'
 import {buildLoginsSaveInput,buildLoginsDeleteInput, buildPermissionsSaveInput,permissionsGridInput, permissionPDfInput} from './laPermissionsUtil';
 import {auditLogViewerGridInput,buildAuditLogViewerDeleteAll} from './aLogViewerUtil';
-import { generateCustomBackupAPI, generateUploadCustomRestoreAPI, processCustomRestoreAPI } from './cBackupRestoreUtil';
-import { generateOptionalBackupAPI, generateUploadOptionalRestoreAPI } from './ourOverrideBackupUtil';
-import { generateDatabaseUploadAPI, generateProcessDatabaseUploadAPI } from './dbLoadUtil';
+import { generateCustomBackupAPI, generateUploadCustomRestoreAPI, processCustomRestoreAPI, customrestoreStatusGridInput } from './cBackupRestoreUtil';
+import { generateOptionalBackupAPI, generateUploadOptionalRestoreAPI, optionalrestoreStatusGridInput } from './ourOverrideBackupUtil';
+import { generateDatabaseUploadAPI, generateProcessDatabaseUploadAPI, databaseLoadStatusGridInput } from './dbLoadUtil';
 import { generateMachineKeyUploadAPI } from './iMachineKeyUtil';
-import { generateManualUpdateUploadAPI } from './manualUpdateUtil';
+import { generateManualUpdateUploadAPI, manualUpdateStatusGridInput } from './manualUpdateUtil';
 import { buildGeneralConfigOptionSaveInput } from './gConfiguratuionUtil';
 /**
  * buildModuleAreaLinks
@@ -328,7 +328,16 @@ export function buildGridDataInput(pageid, store) {
     input = auditLogViewerGridInput(pageid, filterData, stDate, enDate, state);
   } else  if (pageid === 'permissions') {
     input = permissionsGridInput(pageid, filterData, stDate, enDate, state);
-  } else {
+  } else  if (pageid === 'manualupdateStatus') {
+    input = manualUpdateStatusGridInput(pageid, filterData, stDate, enDate, state);
+  } else  if (pageid === 'databaseloadStatus') {
+    input = databaseLoadStatusGridInput(pageid, filterData, stDate, enDate, state);
+  } else  if (pageid === 'customrestoreStatus') {
+    input = customrestoreStatusGridInput(pageid, filterData, stDate, enDate, state);
+  } else  if (pageid === 'optionalrestoreStatus') {
+    input = optionalrestoreStatusGridInput(pageid, filterData, stDate, enDate, state);
+  }
+  else {
     if (state.parentData) { //Reset Parent Data
       let parentData = {};
       store.dispatch(setParentData(parentData))
@@ -526,7 +535,8 @@ export function buildAutoCompSelInput(pageid, store, patten, formValues = {}) {
 
   if(pageid === "permissionFor" || pageid === "exitDataset") {
     return {
-      "login": state.parentInfo.loginName || "AR"
+      login: state.parentInfo.loginName || "AR",
+      userId: appUserId(),
     }
   }
 
