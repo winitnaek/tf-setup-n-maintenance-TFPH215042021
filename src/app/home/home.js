@@ -113,6 +113,9 @@ class TFHome extends Component {
       excluededPages = ["testHarness", "selectSamplePage", "dateFieldDoc","UQ","CD","GD","CT","MT","TS","PD"];
     }
     let perms = getAllRights();
+    if(perms && perms['PN'] && perms['PN'][0]===1){
+      perms["SM"] = perms['PN'];
+    }
     let arr = tftools.filter(tool => !excluededPages.includes(tool.value) && perms[tool.value] && perms[tool.value][0]===1).sort(this.GetSortOrder("label"));
     console.log(arr);
 
@@ -125,6 +128,9 @@ class TFHome extends Component {
   }
   getTFTools() {
     let perms = getAllRights();
+    if(perms && perms['PN'] && perms['PN'][0]===1){
+      perms["SM"] = perms['PN'];
+    }
     let arr = tftools.filter(tool => perms[tool.value] && perms[tool.value][0]===1).sort(this.GetSortOrder("label"));
     const env = this.props.environment;
 
