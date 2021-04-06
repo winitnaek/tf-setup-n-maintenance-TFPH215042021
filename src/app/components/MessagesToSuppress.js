@@ -3,14 +3,16 @@ import { Row, Col, Container, Table, UncontrolledTooltip, Button } from 'reactst
 import * as styles from '../../base/constants/AppConstants';
 import MessageSuppressApi from '../api/messageSuppressAPI';
 import GeneralApi from '../api/generalApi';
+import griddataAPI from '../api/griddataAPI'
 import { tftools as tfTools } from '../../base/constants/TFTools';
 
 class MessagesToSuppress extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: new Array(64).fill(0),
-      validationMessage: ''
+      messages: new Array(64).fill('0'),
+      validationMessage: '',
+      response: [],
     };
     this.renderRows = () => {
       const { messages } = this.state;
@@ -34,17 +36,28 @@ class MessagesToSuppress extends Component {
 
     this.save = () => {
       const { pgid } = this.props;
-      const { messages } = this.state;
-      const messageData = messages.filter(message=>!!message)
+      const { messages, response } = this.state;
+      const messageData = messages;
       let valid = true;
-      for (let i = 0; i < messageData.length; i++) {
-        if (isNaN(+messageData[i]) || +messageData[i] >= 3000) {
-          valid = false;
-          break;
+      for(let i=0;i<response.length;i++) {
+        if(messageData[i]) {
+          response[i].id = {
+            dataset : appDataset(),
+            optnfld : i + 4
+          }
         }
+        response[i].optnrsp = messageData[i];
+        var reg = new RegExp('^[0-9]+$');
+        if(parseInt(messageData[i]) > 3000 || !reg.test(messageData[i])) valid = false;
       }
+      // for (let i = 0; i < messageData.length; i++) {
+      //   if (isNaN(+messageData[i]) || +messageData[i] >= 3000) {
+      //     valid = false;
+      //     break;
+      //   }
+      // }
       if (valid) {
-        MessageSuppressApi.suppressMessages(pgid, messageData).then(res => {
+        MessageSuppressApi.suppressMessages(pgid, response).then(res => {
           if (res.status !== 'ERORR') {
             const data = tfTools.find(tool => tool.id === 'messageViewer');
             if (data) {
@@ -61,22 +74,29 @@ class MessagesToSuppress extends Component {
 
     this.reset = () => {
       this.setState({
-        messages: new Array(64).fill(0)
+        messages: new Array(64).fill('0')
       });
     };
   }
 
   componentDidMount() {
-    GeneralApi.getApiData(this.props.pgid).then(res => {
-      if (res.status !== 'ERORR' && res.messages) {
-        const {length}=res.messages;
-        const {messages}=this.state;
-        const newMessages = res.messages;
-        newMessages.concat(messages.slice(length));
+    griddataAPI.getGridData(this.props.pgid, { dataset: appDataset() }).then(res => {
+      if(res && res.length) {
+        const modifidvalue = res.map(entry => entry.optnrsp);
         this.setState({
-          messages: newMessages
-        });
+          messages: modifidvalue,
+          response: res,
+        })
       }
+      // if (res.status !== 'ERORR' && res.messages) {
+      //   const {length}=res.messages;
+      //   const {messages}=this.state;
+      //   const newMessages = res.messages;
+      //   newMessages.concat(messages.slice(length));
+      //   this.setState({
+      //     messages: newMessages
+      //   });
+      // }
     });
   }
 
@@ -119,7 +139,7 @@ class MessagesToSuppress extends Component {
               <Button color='success mr-2' onClick={this.save}>
                 Save
               </Button>
-              <Button color='default' onClick={this.reset}>
+              <Button color='warning' onClick={this.reset}>
                 Reset
               </Button>
             </div>
@@ -138,7 +158,7 @@ export const RowFields = ({ start, end, data, onChange, roIndex }) => {
   while (start < end) {
     cols.push(
       <td className='p-1'>
-        <input className='w-100' type='text' value={data[start]} id={start} onChange={onChange} />
+        <input maxLength="4" className='w-100' type='text' value={data[start]} id={start} onChange={onChange} />
       </td>
     );
     start++;
