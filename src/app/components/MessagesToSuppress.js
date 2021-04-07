@@ -112,7 +112,7 @@ class MessagesToSuppress extends Component {
               </span>
             </span>
             <UncontrolledTooltip placement='right' target='help'>
-              <span> </span>
+              <span> Click here for more info! </span>
             </UncontrolledTooltip>
           </span>
         </Row>
