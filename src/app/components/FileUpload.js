@@ -313,7 +313,8 @@ class FileUpload extends Component {
             newDatasetId,
             deleteExistingData,
             restorePermission,
-            existingDataset
+            existingDataset,
+            name: this.state.uploadResults[0].name,
           }
           payload = payload.map(data => data.Value)
         }

@@ -24,7 +24,7 @@ export function processCustomRestoreAPI(pageid, store, data, extraInfo) {
     return {
         dataset: appDataset(),     
         userID: appUserId(),  
-        "fileName": "d:\\temp\\tfws\\TF11BR_1615307234498_TF11_EMPTY.xml",  
+        fileName: extraInfo.name,  
         newDataset: extraInfo.newDatasetId ? true : false,
         newDatasetId: extraInfo.newDatasetId,
         deleteExistingData: extraInfo.deleteExistingData,

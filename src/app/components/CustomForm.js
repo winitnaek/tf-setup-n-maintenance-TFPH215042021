@@ -86,6 +86,9 @@ class CustomForm extends React.Component {
       if(!this.state.options.length) {
         let options = await formDataAPI.getFormData(id, value);
         this.setState({ options });
+        const defaultValue = value === '' ? options[0].id : value;
+        this.setState({ options, [id]: defaultValue });
+        this.props.updateFormValue(id, defaultValue);
       }
   }
 

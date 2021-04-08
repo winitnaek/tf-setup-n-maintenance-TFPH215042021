@@ -71,7 +71,9 @@ class CustomFormSaas extends React.Component {
   async getOptions(id, value) {
       if(!this.state.options.length) {
         let options = await formDataAPI.getFormData(id, value);
-        this.setState({ options });
+        const defaultValue = options[0].id;
+        this.setState({ options, [id]: defaultValue });
+        this.props.updateFormValue(id, defaultValue);
       }
   }
 
